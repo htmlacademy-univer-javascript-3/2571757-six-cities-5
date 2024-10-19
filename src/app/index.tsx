@@ -12,6 +12,7 @@ const OFFERS_AMOUNT = 555;
 export const App = () => (
 	<BrowserRouter>
 		<Routes>
+
 			<Route path={AppRoutes.Default}>
 				<Route index element={<MainPage offersAmount={OFFERS_AMOUNT} />} />
 				<Route path={AppRoutes.Login} element={<LoginPage />} />
