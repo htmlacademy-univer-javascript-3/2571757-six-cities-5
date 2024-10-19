@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
-import { OfferCard } from '../../components';
-import { AppRoutes } from '../../app/routes';
+import { OffersList } from '../../components';
+import { AppRoutes } from '../../constants/routes.ts';
+import { Offer } from '../../types/offer.ts';
 
 type Props = {
-	offersAmount: number;
+	offers: Offer[];
 };
 
-export const MainPage = (props: Props) => {
-	const { offersAmount } = props;
+export const MainPage = ({ offers }: Props) => {
+	const offersAmount = offers.length;
 
 	return (
 		<div className="page page--gray page--main">
@@ -98,13 +99,7 @@ export const MainPage = (props: Props) => {
 									<li className="places__option" tabIndex={0}>Top rated first</li>
 								</ul>
 							</form>
-							<div className="cities__places-list places__list tabs__content">
-								<OfferCard/>
-								<OfferCard/>
-								<OfferCard/>
-								<OfferCard/>
-								<OfferCard/>
-							</div>
+							<OffersList offers={offers} />
 						</section>
 						<div className="cities__right-section">
 							<section className="cities__map map"></section>
