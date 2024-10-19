@@ -16,6 +16,9 @@ module.exports = {
 		'react-refresh/only-export-components': 'warn',
 	  	'indent': ['error', 'tab'],
 		'arrow-body-style': 'off',
+		'object-curly-spacing': ['error', 'always'],
+		'comma-dangle': ['error', 'never'],
+		'quotes': ['error', 'single'],
 	},
 	overrides: [
 		{
