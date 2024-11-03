@@ -20,14 +20,12 @@ export const OffersList = ({ offers, favorites }: Props) => {
 
 	return (
 		<div className={favorites ? 'favorites__places' : 'cities__places-list places__list tabs__content'}>
-			{offers.length ? offers.map((offer) => {
-				const { id } = offer;
-
+			{offers.length && offers.map((offer) => {
 				// TODO: Объединить карточки в один компонент
 				return favorites ?
-					<FavoriteCard key={id} {...offer} /> :
-					<OfferCard key={id} {...offer} onHover={handleCardSetActiveStatus} />;
-			}) : null}
+					<FavoriteCard key={offer.id} {...offer} /> :
+					<OfferCard key={offer.id} {...offer} onHover={handleCardSetActiveStatus} />;
+			})}
 		</div>
 	);
 };
