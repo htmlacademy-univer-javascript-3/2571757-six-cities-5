@@ -2,3 +2,8 @@ export { OfferCard } from './offer-card';
 export { OffersList } from './offers-list';
 export { FavoriteCard } from './favorite-card';
 export { CommentForm } from './comment-form';
+export { Map } from './map';
+export { ErrorBoundary } from './error-boundary';
+export { Tabs } from './tabs';
+export { Tab } from './tab';
+export { CityOffers } from './city-offers';

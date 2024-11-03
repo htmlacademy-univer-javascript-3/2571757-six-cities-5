@@ -7,7 +7,7 @@ type Props = {
 }
 
 export const FavoritesPage = ({ offers }: Props) => {
-	const citiesSplittedByCity = useMemo(() => {
+	const offersSplittedByCity = useMemo(() => {
 		return offers.reduce((acc, currOffer) => {
 			if (!acc[currOffer.city.name]) {
 				acc[currOffer.city.name] = [];
@@ -24,7 +24,7 @@ export const FavoritesPage = ({ offers }: Props) => {
 					<div className="header__wrapper">
 						<div className="header__left">
 							<a className="header__logo-link" href="main.html">
-								<img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
+								<img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
 							</a>
 						</div>
 						<nav className="header__nav">
@@ -53,7 +53,7 @@ export const FavoritesPage = ({ offers }: Props) => {
 					<section className="favorites">
 						<h1 className="favorites__title">Saved listing</h1>
 						<ul className="favorites__list">
-							{Object.keys(citiesSplittedByCity).length && Object.entries(citiesSplittedByCity).map(([cityName, offersForCity]) => (
+							{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, offersForCity]) => (
 								<li className="favorites__locations-items" key={cityName}>
 									<div className="favorites__locations locations locations--current">
 										<div className="locations__item">
@@ -62,7 +62,7 @@ export const FavoritesPage = ({ offers }: Props) => {
 											</a>
 										</div>
 									</div>
-									<OffersList offers={offersForCity} favorites/>
+									<OffersList offers={offersForCity} favorites />
 								</li>
 							))}
 						</ul>
@@ -71,7 +71,7 @@ export const FavoritesPage = ({ offers }: Props) => {
 			</main>
 			<footer className="footer container">
 				<a className="footer__logo-link" href="main.html">
-					<img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
+					<img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
 				</a>
 			</footer>
 		</div>
