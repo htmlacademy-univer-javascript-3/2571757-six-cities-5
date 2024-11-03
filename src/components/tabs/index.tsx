@@ -1,12 +1,11 @@
 import { Tab } from '../tab';
 
 type Props = {
-	activeCity?: string;
 	citiesNames: string[];
 };
 
 // eslint-disable-next-line
-export const Tabs = ({ citiesNames, activeCity }: Props) => {
+export const Tabs = ({ citiesNames }: Props) => {
 	return (
 		<div className="tabs">
 			<section className="locations container">
