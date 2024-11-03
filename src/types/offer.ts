@@ -1,12 +1,12 @@
 type OfferType = 'apartment';
 
-type OfferLocation = {
+export type OfferLocation = {
 	latitude: number;
 	longitude: number;
 	zoom: number;
 };
 
-type OfferCity = {
+export type OfferCity = {
 	name: string;
 	location: OfferLocation;
 };
