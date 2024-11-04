@@ -23,3 +23,6 @@ export type Offer = {
 	rating: 1 | 2 | 3 | 4 | 5;
 	previewImage: string;
 };
+
+export type OfferPreviewType = 'favorites' | 'nearest' | 'default';
+

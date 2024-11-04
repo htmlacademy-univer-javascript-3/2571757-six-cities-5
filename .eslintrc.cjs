@@ -14,7 +14,7 @@ module.exports = {
 	plugins: ['react-refresh'],
 	rules: {
 		'react-refresh/only-export-components': 'warn',
-	  	'indent': ['error', 'tab'],
+	  	'indent': ['error', 'tab', {"SwitchCase": 1}],
 		'arrow-body-style': 'off',
 		'object-curly-spacing': ['error', 'always'],
 		'comma-dangle': ['error', 'never'],

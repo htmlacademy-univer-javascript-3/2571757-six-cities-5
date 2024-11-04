@@ -1,20 +1,28 @@
-import { Offer } from '../../types/offer.ts';
+import type { Offer, OfferPreviewType } from '../../types/offer.ts';
 import { OfferCard } from '../offer-card';
-import { FavoriteCard } from '../favorite-card';
 
 type Props = {
 	offers: Offer[];
-	favorites?: boolean;
+	type: OfferPreviewType;
 	onOfferHover?: (id?: Offer['id']) => void;
 };
 
-export const OffersList = ({ offers, favorites, onOfferHover }: Props) => {
+export const OffersList = ({ offers, type = 'default', onOfferHover }: Props) => {
+	const calculateClassName = (listType: OfferPreviewType) => {
+		switch (listType) {
+			case 'favorites':
+				return 'favorites__places';
+			case 'nearest':
+				return 'near-places__list places__list';
+			default:
+				return 'cities__places-list places__list tabs__content';
+		}
+	};
+
 	return (
-		<div className={favorites ? 'favorites__places' : 'cities__places-list places__list tabs__content'}>
+		<div className={calculateClassName(type)}>
 			{offers.length && offers.map((offer) => {
-				return favorites ?
-					<FavoriteCard key={offer.id} {...offer} /> :
-					<OfferCard key={offer.id} {...offer} onHover={onOfferHover} />;
+				return <OfferCard key={offer.id} previewType={type} {...offer} onHover={onOfferHover} />;
 			})}
 		</div>
 	);

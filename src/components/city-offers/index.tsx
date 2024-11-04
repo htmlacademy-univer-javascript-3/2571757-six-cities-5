@@ -41,7 +41,7 @@ export const CityOffers = ({ offers }: Props) => {
 							<li className="places__option" tabIndex={0}>Top rated first</li>
 						</ul>
 					</form>
-					<OffersList offers={offers} onOfferHover={handleOfferHover} />
+					<OffersList offers={offers} onOfferHover={handleOfferHover} type='default' />
 				</section>
 				<div className="cities__right-section">
 					<section className="cities__map">
