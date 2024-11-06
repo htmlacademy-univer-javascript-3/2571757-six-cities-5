@@ -3,6 +3,7 @@ import { getRatingTitle } from './utils';
 import { CommentFormState } from './types';
 
 const MIN_COMMENT_MESSAGE_LENGTH = 50;
+const RATING_VARIANTS = [5, 4, 3, 2, 1];
 
 export const CommentForm = () => {
 	const [formData, setFormData] = useState<CommentFormState>({
@@ -31,7 +32,7 @@ export const CommentForm = () => {
 		<form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
 			<label className="reviews__label form__label" htmlFor="review">Your review</label>
 			<div className="reviews__rating-form form__rating">
-				{[5, 4, 3, 2, 1].map((star) => (
+				{RATING_VARIANTS.map((star) => (
 					<Fragment key={star}>
 						<input
 							className="form__rating-input visually-hidden"

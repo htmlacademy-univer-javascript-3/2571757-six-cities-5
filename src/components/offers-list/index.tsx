@@ -1,33 +1,29 @@
-import { useCallback, useState } from 'react';
-import { Offer } from '../../types/offer.ts';
+import type { Offer, OfferPreviewType } from '../../types/offer.ts';
 import { OfferCard } from '../offer-card';
-import { FavoriteCard } from '../favorite-card';
 
 type Props = {
 	offers: Offer[];
-	favorites?: boolean;
+	type: OfferPreviewType;
+	onOfferHover?: (id?: Offer['id']) => void;
 };
 
-export const OffersList = ({ offers, favorites }: Props) => {
-	const [activeCardId, setActiveCardId] = useState<Offer['id'] | undefined>(undefined);
-
-	// eslint-disable-next-line no-console
-	console.log('activeCardId: ', activeCardId);
-
-	const handleCardSetActiveStatus = useCallback((id: Offer['id'] | undefined) => {
-		setActiveCardId(id);
-	}, []);
+export const OffersList = ({ offers, type = 'default', onOfferHover }: Props) => {
+	const calculateClassName = (listType: OfferPreviewType) => {
+		switch (listType) {
+			case 'favorites':
+				return 'favorites__places';
+			case 'nearest':
+				return 'near-places__list places__list';
+			default:
+				return 'cities__places-list places__list tabs__content';
+		}
+	};
 
 	return (
-		<div className={favorites ? 'favorites__places' : 'cities__places-list places__list tabs__content'}>
-			{offers.length ? offers.map((offer) => {
-				const { id } = offer;
-
-				// TODO: Объединить карточки в один компонент
-				return favorites ?
-					<FavoriteCard key={id} {...offer} /> :
-					<OfferCard key={id} {...offer} onHover={handleCardSetActiveStatus} />;
-			}) : null}
+		<div className={calculateClassName(type)}>
+			{offers.length && offers.map((offer) => {
+				return <OfferCard key={offer.id} previewType={type} {...offer} onHover={onOfferHover} />;
+			})}
 		</div>
 	);
 };

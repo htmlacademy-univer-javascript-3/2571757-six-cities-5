@@ -1,12 +1,12 @@
 type OfferType = 'apartment';
 
-type OfferLocation = {
+export type OfferLocation = {
 	latitude: number;
 	longitude: number;
 	zoom: number;
 };
 
-type OfferCity = {
+export type OfferCity = {
 	name: string;
 	location: OfferLocation;
 };
@@ -23,3 +23,6 @@ export type Offer = {
 	rating: 1 | 2 | 3 | 4 | 5;
 	previewImage: string;
 };
+
+export type OfferPreviewType = 'favorites' | 'nearest' | 'default';
+
