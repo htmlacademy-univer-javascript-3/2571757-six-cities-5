@@ -3,8 +3,6 @@ export const convertDate = (dateString: string): string => {
 	return date.toLocaleString('ru', {
 		year: 'numeric',
 		month: 'long',
-		day: 'numeric',
-		hour: 'numeric',
-		minute: 'numeric'
+		day: 'numeric'
 	});
 };
