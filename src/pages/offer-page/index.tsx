@@ -1,20 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { FeedbackBlock } from '../../components/feedback-block';
 import { Map, OffersList } from '../../components';
 import { offersMock as nearestOffers } from '../../mocks/offers.ts';
-import type { Offer } from '../../types/offer.ts';
 
 export const OfferPage = () => {
 	const { id } = useParams<{ id: string }>();
-	const [hoveredOfferId, setHoveredOfferId] = useState<Offer['id'] | undefined>(undefined);
-	const handleOfferHover = (offerId: Offer['id'] | undefined) => {
-		setHoveredOfferId(offerId);
-	};
-
-	const hoveredOffer = useMemo(() => {
-		return nearestOffers.find((offer) => offer.id === hoveredOfferId);
-	}, [hoveredOfferId]);
 
 	// TODO: запрос на бек за данными для офера по айдишнику, это удалить
 	const offerData = useMemo(() => {
@@ -183,13 +174,13 @@ export const OfferPage = () => {
 						</div>
 					</div>
 					<section className="offer__map">
-						<Map offers={nearestOffers} activeCityName={offerData.city.name} width='100%' selectedOffer={hoveredOffer} />
+						<Map offers={nearestOffers} activeCityName={offerData.city.name} width='100%' selectedOffer={offerData} />
 					</section>
 				</section>
 				<div className="container">
 					<section className="near-places places">
 						<h2 className="near-places__title">Other places in the neighbourhood</h2>
-						<OffersList offers={nearestOffers} type='nearest' onOfferHover={handleOfferHover} />
+						<OffersList offers={nearestOffers.slice(0, 3)} type='nearest' />
 					</section>
 				</div>
 			</main>
