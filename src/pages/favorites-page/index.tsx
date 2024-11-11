@@ -1,11 +1,13 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
 import { OffersList } from '../../components';
-import { useAppSelector } from '../../store/hooks.ts';
-import { getOffersSelector } from '../../store/selectors.ts';
+import { useActions, useAppSelector } from '../../store/hooks.ts';
+import { getFavoritesOffersSelector } from '../../store/selectors.ts';
 
 export const FavoritesPage = () => {
-	const offers = useAppSelector(getOffersSelector);
+	const offers = useAppSelector(getFavoritesOffersSelector);
+	const { getFavoritesOffers } = useActions();
+
 	const offersSplittedByCity = useMemo(() => {
 		return offers.reduce((acc, currOffer) => {
 			if (!acc[currOffer.city.name]) {
@@ -15,6 +17,10 @@ export const FavoritesPage = () => {
 			return acc;
 		}, {} as Record<Offer['city']['name'], Offer[]>);
 	}, [offers]);
+
+	useEffect(() => {
+		getFavoritesOffers();
+	}, [getFavoritesOffers]);
 
 	return (
 		<div className="page">
@@ -61,7 +67,7 @@ export const FavoritesPage = () => {
 											</a>
 										</div>
 									</div>
-									<OffersList offers={offersForCity} type='favorites' />
+									{offers && <OffersList offers={offersForCity} type='favorites' />}
 								</li>
 							))}
 						</ul>
