@@ -1,3 +1,5 @@
+import { Cities } from './cities';
+
 type OfferType = 'apartment';
 
 export type OfferLocation = {
@@ -7,7 +9,7 @@ export type OfferLocation = {
 };
 
 export type OfferCity = {
-	name: string;
+	name: Cities;
 	location: OfferLocation;
 };
 
@@ -20,7 +22,7 @@ export type Offer = {
 	location: OfferLocation;
 	isFavorite: boolean;
 	isPremium: boolean;
-	rating: 1 | 2 | 3 | 4 | 5;
+	rating: number;
 	previewImage: string;
 };
 

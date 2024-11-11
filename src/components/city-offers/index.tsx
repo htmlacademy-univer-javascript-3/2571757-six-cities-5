@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import type { Offer } from '../../types/offer';
 import { OffersList } from '../offers-list';
 import { Map } from '../map';
+import { useAppSelector } from '../../store/hooks';
+import { getCitySelector } from '../../store/selectors';
 
 type Props = {
 	offers: Offer[];
@@ -9,8 +11,8 @@ type Props = {
 
 export const CityOffers = ({ offers }: Props) => {
 	const [hoveredOfferId, setHoveredOfferId] = useState<Offer['id'] | undefined>(undefined);
+	const cityName = useAppSelector(getCitySelector);
 	const offersAmount = offers.length;
-	const ACTIVE_CITY = 'Amsterdam';
 
 	const handleOfferHover = (id: Offer['id'] | undefined) => {
 		setHoveredOfferId(id);
@@ -20,12 +22,16 @@ export const CityOffers = ({ offers }: Props) => {
 		return offers.find((offer) => offer.id === hoveredOfferId);
 	}, [hoveredOfferId, offers]);
 
+	if (!offers.length) {
+		return <div>Offers loading...</div>;
+	}
+
 	return (
 		<div className="cities">
 			<div className="cities__places-container container">
 				<section className="cities__places places">
 					<h2 className="visually-hidden">Places</h2>
-					<b className="places__found">{offersAmount} places to stay in Amsterdam</b>
+					<b className="places__found">{offersAmount} places to stay in {cityName}</b>
 					<form className="places__sorting" action="#" method="get">
 						<span className="places__sorting-caption">Sort by</span>
 						<span className="places__sorting-type" tabIndex={0}>
@@ -45,7 +51,7 @@ export const CityOffers = ({ offers }: Props) => {
 				</section>
 				<div className="cities__right-section">
 					<section className="cities__map">
-						<Map offers={offers} activeCityName={ACTIVE_CITY} selectedOffer={hoveredOffer} />
+						<Map offers={offers} activeCityName={cityName} selectedOffer={hoveredOffer} />
 					</section>
 				</div>
 			</div>

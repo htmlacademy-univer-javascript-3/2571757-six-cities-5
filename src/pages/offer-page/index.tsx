@@ -2,14 +2,17 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { FeedbackBlock } from '../../components/feedback-block';
 import { Map, OffersList } from '../../components';
-import { offersMock as nearestOffers } from '../../mocks/offers.ts';
+import { offersMock } from '../../mocks/offers.ts';
 
 export const OfferPage = () => {
 	const { id } = useParams<{ id: string }>();
 
-	// TODO: запрос на бек за данными для офера по айдишнику, это удалить
+	const nearestOffers = useMemo(() => {
+		return offersMock.filter((offer) => offer.id !== id);
+	}, [id]);
+
 	const offerData = useMemo(() => {
-		return nearestOffers.find((offer) => offer.id === id) ?? nearestOffers[0];
+		return offersMock.find((offer) => offer.id === id) ?? offersMock[0];
 	}, [id]);
 
 	// eslint-disable-next-line no-console
@@ -174,7 +177,7 @@ export const OfferPage = () => {
 						</div>
 					</div>
 					<section className="offer__map">
-						<Map offers={nearestOffers} activeCityName={offerData.city.name} width='100%' selectedOffer={offerData} />
+						<Map offers={offersMock} activeCityName={offerData.city.name} width='100%' selectedOffer={offerData} />
 					</section>
 				</section>
 				<div className="container">

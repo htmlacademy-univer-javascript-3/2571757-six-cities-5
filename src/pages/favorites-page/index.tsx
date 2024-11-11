@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
 import { OffersList } from '../../components';
+import { useAppSelector } from '../../store/hooks.ts';
+import { getOffersSelector } from '../../store/selectors.ts';
 
-type Props = {
-	offers: Offer[];
-}
-
-export const FavoritesPage = ({ offers }: Props) => {
+export const FavoritesPage = () => {
+	const offers = useAppSelector(getOffersSelector);
 	const offersSplittedByCity = useMemo(() => {
 		return offers.reduce((acc, currOffer) => {
 			if (!acc[currOffer.city.name]) {

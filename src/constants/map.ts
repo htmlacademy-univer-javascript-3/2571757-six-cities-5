@@ -1,7 +1,7 @@
 import { Icon } from 'leaflet';
 
 // Зум
-export const DEFAULT_MAP_ZOOM = 10;
+export const DEFAULT_MAP_ZOOM = 14;
 
 // Маркеры
 const URL_MARKER_DEFAULT =

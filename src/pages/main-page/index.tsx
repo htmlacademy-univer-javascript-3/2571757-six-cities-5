@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
 import { CityOffers } from '../../components';
 import { AppRoutes } from '../../constants/routes.ts';
-import type { Offer } from '../../types/offer.ts';
-import { Tabs } from '../../components';
+import { CitiesList } from '../../components';
+import { CITIES } from '../../constants/cities.ts';
+import { useActions, useAppSelector } from '../../store/hooks.ts';
+import { getCitySelector, getOffersSelector } from '../../store/selectors.ts';
+import { useEffect } from 'react';
 
-type Props = {
-	offers: Offer[];
-};
+export const MainPage = () => {
+	const offers = useAppSelector(getOffersSelector);
+	const cityName = useAppSelector(getCitySelector);
+	const { getOffers } = useActions();
 
-const CITIES_NAMES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+	useEffect(() => {
+		getOffers(cityName);
+	}, [getOffers, cityName]);
 
-export const MainPage = ({ offers }: Props) => {
 	return (
 		<div className="page page--gray page--main">
 			<header className="header">
@@ -44,7 +49,7 @@ export const MainPage = ({ offers }: Props) => {
 
 			<main className="page__main page__main--index">
 				<h1 className="visually-hidden">Cities</h1>
-				<Tabs citiesNames={CITIES_NAMES} />
+				<CitiesList citiesNames={CITIES} />
 				<CityOffers offers={offers} />
 			</main>
 		</div>
