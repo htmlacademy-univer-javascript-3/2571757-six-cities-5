@@ -17,6 +17,7 @@ export const OfferCard = (props: Props) => {
 		type,
 		rating,
 		previewType,
+		isPremium,
 		onHover
 	} = props;
 	const isDefaultOfferType = previewType === 'default';
@@ -45,7 +46,11 @@ export const OfferCard = (props: Props) => {
 		<article className={`${calculateClassName(previewType)}__card place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 			{isDefaultOfferType && (
 				<div className={`${calculateClassName(previewType)}__mark`}>
-					<span>Premium</span>
+					{isPremium && (
+						<div className="place-card__mark">
+							<span>Premium</span>
+						</div>
+					)}
 				</div>
 			)}
 			<div className={`${calculateClassName(previewType)}__image-wrapper place-card__image-wrapper`}>

@@ -1,20 +1,22 @@
-import { useRef, useEffect, useState } from 'react';
-import { Marker, layerGroup } from 'leaflet';
+import { useRef, useEffect } from 'react';
+import { Marker, layerGroup, LatLngBounds, LatLngBoundsLiteral } from 'leaflet';
 import { useMap } from '../../hooks/use-map';
 import type { Offer } from '../../types/offer';
 import type { MarkerRef } from '../../types/map';
 import {
 	defaultCustomIcon,
-	currentCustomIcon
+	currentCustomIcon,
+	DEFAULT_MAP_ZOOM
 } from '../../constants/map';
 import 'leaflet/dist/leaflet.css';
+import { Cities } from '../../types/cities';
 
 type Props = {
 	width?: string;
 	height?: string;
 	offers: Offer[];
 	selectedOffer?: Offer;
-	activeCityName: string;
+	activeCityName: Cities;
 };
 
 export const Map = ({
@@ -24,47 +26,49 @@ export const Map = ({
 	activeCityName,
 	selectedOffer
 }: Props): JSX.Element => {
-	const [{ city, points }] = useState(() => {
-		const filteredOffers = offers.filter((offer) => offer.city.name === activeCityName);
-		const offerData = filteredOffers.find((offer) => offer.city.name === activeCityName);
-
-		return {
-			city: offerData?.city,
-			points: filteredOffers.map((offer) => ({ title: offer.title, ...offer.location }))
-		};
-	});
-
 	const mapRef = useRef(null);
-	const map = useMap(mapRef, city);
 	const markerLayerRef = useRef(layerGroup());
 	const markersRef = useRef<MarkerRef[]>([]);
 
-	useEffect(() => {
-		if (map) {
-			if (!markersRef.current.length) {
-				points.forEach(({ latitude, longitude, title }) => {
-					const marker = new Marker({ lat: latitude, lng: longitude })
-						.setIcon(
-							selectedOffer && title === selectedOffer.title
-								? currentCustomIcon
-								: defaultCustomIcon
-						)
-						.addTo(markerLayerRef.current);
-					markersRef.current.push({ marker, title });
-				});
+	const cityData = offers.find((offer) => offer.city.name === activeCityName)?.city;
+	const points = offers
+		.filter((offer) => offer.city.name === activeCityName)
+		.map((offer) => ({ title: offer.title, ...offer.location }));
 
-				markerLayerRef.current.addTo(map);
-			} else {
-				markersRef.current.forEach(({ marker, title }) => {
-					marker.setIcon(
+	const map = useMap(mapRef, cityData);
+
+	useEffect(() => {
+		if (map && cityData) {
+			// Очищаем старые маркеры и добавляем новые
+			markerLayerRef.current.clearLayers();
+			markersRef.current = [];
+
+			// Создаем новый массив для маркеров
+			const markers = points.map(({ latitude, longitude, title }) => {
+				const marker = new Marker({ lat: latitude, lng: longitude })
+					.setIcon(
 						selectedOffer && title === selectedOffer.title
 							? currentCustomIcon
 							: defaultCustomIcon
-					);
-				});
-			}
+					)
+					.addTo(markerLayerRef.current);
+
+				markersRef.current.push({ marker, title });
+
+				// Добавляем маркеры в массив для последующего вычисления границ
+				return [latitude, longitude];
+			}) as unknown as LatLngBoundsLiteral;
+
+			// Добавляем маркеры на карту
+			markerLayerRef.current.addTo(map);
+
+			// Вычисляем границы для всех маркеров
+			const bounds = new LatLngBounds(markers);
+
+			// Устанавливаем зум и границы карты, чтобы все маркеры помещались на экране
+			map.fitBounds(bounds, { padding: [50, 50], maxZoom: DEFAULT_MAP_ZOOM });
 		}
-	}, [map, points, selectedOffer]);
+	}, [map, points, selectedOffer, activeCityName, cityData]);
 
 	return <div style={{ width, height }} ref={mapRef}></div>;
 };
