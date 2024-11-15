@@ -39,11 +39,9 @@ export const Map = ({
 
 	useEffect(() => {
 		if (map && cityData) {
-			// Очищаем старые маркеры и добавляем новые
 			markerLayerRef.current.clearLayers();
 			markersRef.current = [];
 
-			// Создаем новый массив для маркеров
 			const markers = points.map(({ latitude, longitude, title }) => {
 				const marker = new Marker({ lat: latitude, lng: longitude })
 					.setIcon(
@@ -55,17 +53,13 @@ export const Map = ({
 
 				markersRef.current.push({ marker, title });
 
-				// Добавляем маркеры в массив для последующего вычисления границ
 				return [latitude, longitude];
 			}) as unknown as LatLngBoundsLiteral;
 
-			// Добавляем маркеры на карту
 			markerLayerRef.current.addTo(map);
 
-			// Вычисляем границы для всех маркеров
 			const bounds = new LatLngBounds(markers);
 
-			// Устанавливаем зум и границы карты, чтобы все маркеры помещались на экране
 			map.fitBounds(bounds, { padding: [50, 50], maxZoom: DEFAULT_MAP_ZOOM });
 		}
 	}, [map, points, selectedOffer, activeCityName, cityData]);

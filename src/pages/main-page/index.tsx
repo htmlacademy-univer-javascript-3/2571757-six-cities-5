@@ -4,17 +4,20 @@ import { AppRoutes } from '../../constants/routes.ts';
 import { CitiesList } from '../../components';
 import { CITIES } from '../../constants/cities.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { getCitySelector, getOffersSelector } from '../../store/selectors.ts';
+import { selectCityName, selectOffers } from '../../store/selectors.ts';
 import { useEffect } from 'react';
+import { useSortedOffers } from '../../hooks/use-sorted-offers.ts';
 
 export const MainPage = () => {
-	const offers = useAppSelector(getOffersSelector);
-	const cityName = useAppSelector(getCitySelector);
+	const offers = useAppSelector(selectOffers);
+	const cityName = useAppSelector(selectCityName);
 	const { getOffers } = useActions();
 
 	useEffect(() => {
 		getOffers(cityName);
 	}, [getOffers, cityName]);
+
+	const sortedOffers = useSortedOffers(offers);
 
 	return (
 		<div className="page page--gray page--main">
@@ -50,7 +53,7 @@ export const MainPage = () => {
 			<main className="page__main page__main--index">
 				<h1 className="visually-hidden">Cities</h1>
 				<CitiesList citiesNames={CITIES} />
-				<CityOffers offers={offers} />
+				<CityOffers offers={sortedOffers} />
 			</main>
 		</div>
 	);

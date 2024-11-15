@@ -2,10 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
 import { OffersList } from '../../components';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { getFavoritesOffersSelector } from '../../store/selectors.ts';
+import { selectFavoriteOffers } from '../../store/selectors.ts';
 
 export const FavoritesPage = () => {
-	const offers = useAppSelector(getFavoritesOffersSelector);
+	const offers = useAppSelector(selectFavoriteOffers);
 	const { getFavoritesOffers } = useActions();
 
 	const offersSplittedByCity = useMemo(() => {

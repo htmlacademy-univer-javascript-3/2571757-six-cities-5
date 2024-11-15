@@ -1,7 +1,8 @@
 import { RootState } from './types';
 
-const getStateSelector = (state: RootState) => state;
+const selectState = (state: RootState) => state;
 
-export const getCitySelector = (state: RootState) => getStateSelector(state).city;
-export const getOffersSelector = (state: RootState) => getStateSelector(state).offers;
-export const getFavoritesOffersSelector = (state: RootState) => getStateSelector(state).favoritesOffers;
+export const selectCityName = (state: RootState) => selectState(state).city;
+export const selectOffers = (state: RootState) => selectState(state).offers;
+export const selectFavoriteOffers = (state: RootState) => selectState(state).favoritesOffers;
+export const selectSortVariant = (state: RootState) => selectState(state).sortVariant;
