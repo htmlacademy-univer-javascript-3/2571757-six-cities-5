@@ -1,0 +1,7 @@
+.variant {
+	margin-left: 5px;
+}
+
+.rotated {
+	transform: rotate(180deg) translateY(3px);
+}

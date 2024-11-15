@@ -8,3 +8,4 @@ export { CityTab } from './city-tab';
 export { CityOffers } from './city-offers';
 export { Review } from './review';
 export { ReviewList } from './review-list';
+export { SortForm } from './sort-form';

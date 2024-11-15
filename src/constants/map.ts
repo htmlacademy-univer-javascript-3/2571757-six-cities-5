@@ -5,9 +5,9 @@ export const DEFAULT_MAP_ZOOM = 14;
 
 // Маркеры
 const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+  '../../public/img/pin.svg';
 const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+  '../../public/img/pin-active.svg';
 
 export const defaultCustomIcon = new Icon({
 	iconUrl: URL_MARKER_DEFAULT,
