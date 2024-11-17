@@ -1,6 +1,8 @@
 export enum Paths {
 	FetchOffers = '/offers',
-	FetchFavoritesOffers = '/favorite'
+	FetchFavoritesOffers = '/favorite',
+	Login = '/login',
+	Logout = '/logout'
 }
 
 export const BASE_URL = 'https://14.design.htmlacademy.pro/six-cities';

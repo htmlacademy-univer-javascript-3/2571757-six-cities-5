@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AppRoutes } from '../../constants/routes.ts';
+import { useAppSelector } from '../../store/hooks.ts';
+import { selectAuthReducerData } from '../../store/selectors.ts';
 
 type Props = {
-	isAuthenticated: boolean;
 	children: ReactNode;
 }
 
-export const PrivateRoute = ({ isAuthenticated, children }: Props) => {
-	return isAuthenticated ? children : <Navigate to={AppRoutes.Login} replace />;
+export const PrivateRoute = ({ children }: Props) => {
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
+
+	return authorizationStatus === 'authorized' ? children : <Navigate to={AppRoutes.Login} replace />;
 };

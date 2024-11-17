@@ -33,7 +33,7 @@ export const Map = ({
 	const cityData = offers.find((offer) => offer.city.name === activeCityName)?.city;
 	const points = offers
 		.filter((offer) => offer.city.name === activeCityName)
-		.map((offer) => ({ title: offer.title, ...offer.location }));
+		.map((offer) => ({ id: offer.id, title: offer.title, ...offer.location }));
 
 	const map = useMap(mapRef, cityData);
 
@@ -42,10 +42,10 @@ export const Map = ({
 			markerLayerRef.current.clearLayers();
 			markersRef.current = [];
 
-			const markers = points.map(({ latitude, longitude, title }) => {
+			const markers = points.map(({ latitude, longitude, id, title }) => {
 				const marker = new Marker({ lat: latitude, lng: longitude })
 					.setIcon(
-						selectedOffer && title === selectedOffer.title
+						selectedOffer && id === selectedOffer.id
 							? currentCustomIcon
 							: defaultCustomIcon
 					)
