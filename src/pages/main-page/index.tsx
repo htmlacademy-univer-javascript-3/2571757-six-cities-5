@@ -1,21 +1,21 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CityOffers } from '../../components';
 import { AppRoutes } from '../../constants/routes.ts';
 import { CitiesList } from '../../components';
 import { CITIES } from '../../constants/cities.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { selectCityName, selectOffers } from '../../store/selectors.ts';
-import { useEffect } from 'react';
+import { selectCityName, selectOffersReducerData } from '../../store/selectors.ts';
 import { useSortedOffers } from '../../hooks/use-sorted-offers.ts';
-
+import { Spinner } from '../../components';
 export const MainPage = () => {
-	const offers = useAppSelector(selectOffers);
+	const { offers, loading } = useAppSelector(selectOffersReducerData);
 	const cityName = useAppSelector(selectCityName);
-	const { getOffers } = useActions();
+	const { fetchOffers } = useActions();
 
 	useEffect(() => {
-		getOffers(cityName);
-	}, [getOffers, cityName]);
+		fetchOffers();
+	}, [fetchOffers, cityName]);
 
 	const sortedOffers = useSortedOffers(offers);
 
@@ -53,9 +53,13 @@ export const MainPage = () => {
 			<main className="page__main page__main--index">
 				<h1 className="visually-hidden">Cities</h1>
 				<CitiesList citiesNames={CITIES} />
-				<CityOffers offers={sortedOffers} />
-			</main>
-		</div>
+				{loading ? (
+					<Spinner size='l' />
+				) : (
+					<CityOffers offers={sortedOffers} />
+				)}
+			</main >
+		</div >
 	);
 };
 

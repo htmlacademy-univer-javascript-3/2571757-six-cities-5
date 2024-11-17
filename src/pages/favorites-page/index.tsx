@@ -1,26 +1,26 @@
 import { useEffect, useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
-import { OffersList } from '../../components';
+import { OffersList, Spinner } from '../../components';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { selectFavoriteOffers } from '../../store/selectors.ts';
+import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
 
 export const FavoritesPage = () => {
-	const offers = useAppSelector(selectFavoriteOffers);
-	const { getFavoritesOffers } = useActions();
+	const { favoritesOffers, loading } = useAppSelector(selectFavoriteOffersReducerData);
+	const { fetchFavoritesOffers } = useActions();
 
 	const offersSplittedByCity = useMemo(() => {
-		return offers.reduce((acc, currOffer) => {
+		return favoritesOffers.reduce((acc, currOffer) => {
 			if (!acc[currOffer.city.name]) {
 				acc[currOffer.city.name] = [];
 			}
 			acc[currOffer.city.name].push(currOffer);
 			return acc;
 		}, {} as Record<Offer['city']['name'], Offer[]>);
-	}, [offers]);
+	}, [favoritesOffers]);
 
 	useEffect(() => {
-		getFavoritesOffers();
-	}, [getFavoritesOffers]);
+		fetchFavoritesOffers();
+	}, [fetchFavoritesOffers]);
 
 	return (
 		<div className="page">
@@ -67,7 +67,11 @@ export const FavoritesPage = () => {
 											</a>
 										</div>
 									</div>
-									{offers && <OffersList offers={offersForCity} type='favorites' />}
+									{loading ? (
+										<Spinner size='l' />
+									) : (
+										<OffersList offers={offersForCity} type='favorites' />
+									)}
 								</li>
 							))}
 						</ul>
