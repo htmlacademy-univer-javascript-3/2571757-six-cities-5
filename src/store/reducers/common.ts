@@ -14,7 +14,7 @@ const initialState: CommonState = {
 	sortVariant: SortVariant.Popular
 };
 
-export const filterReducer = createReducer(
+export const commonReducer = createReducer(
 	initialState,
 	(builder) => {
 		builder
@@ -27,4 +27,4 @@ export const filterReducer = createReducer(
 	}
 );
 
-export default filterReducer;
+export default commonReducer;

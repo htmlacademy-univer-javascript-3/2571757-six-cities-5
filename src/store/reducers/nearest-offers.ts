@@ -1,38 +1,38 @@
 import { createReducer } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
-import { fetchOffers } from '../action';
+import { fetchNearestOffers } from '../action';
 
-type FavoritesOffersState = {
-	favoritesOffers: Offer[];
+type OffersState = {
+	nearestOffers: Offer[];
 	loading: boolean;
 	error: string | null;
 };
 
-const initialState: FavoritesOffersState = {
-	favoritesOffers: [],
+const initialState: OffersState = {
+	nearestOffers: [],
 	loading: false,
 	error: null
 };
 
-export const favoriteOffersReducer = createReducer(
+export const nearestOffersReducer = createReducer(
 	initialState,
 	(builder) => {
 		builder
-			.addCase(fetchOffers.pending, (state) => {
+			.addCase(fetchNearestOffers.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(fetchOffers.fulfilled, (state, action: PayloadAction<Offer[]>) => {
-				state.favoritesOffers = action.payload;
+			.addCase(fetchNearestOffers.fulfilled, (state, action: PayloadAction<Offer[]>) => {
+				state.nearestOffers = action.payload;
 				state.loading = false;
 				state.error = null;
 			})
-			.addCase(fetchOffers.rejected, (state, action) => {
+			.addCase(fetchNearestOffers.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.error.message || 'Something went wrong';
 			});
 	}
 );
 
-export default favoriteOffersReducer;
+export default nearestOffersReducer;

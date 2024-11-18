@@ -11,3 +11,5 @@ export { SortForm } from './sort-form';
 export { Spinner } from './spinner';
 export { Header } from './header';
 export { SignInForm } from './singin-form';
+export { PageWrapper } from './page-wrapper';
+export { FeedbackBlock } from './feedback-block';

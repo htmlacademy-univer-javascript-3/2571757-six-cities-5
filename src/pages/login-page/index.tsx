@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Header } from '../../components';
+import { PageWrapper } from '../../components';
 import { SignInForm } from '../../components';
 import { useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData } from '../../store/selectors';
@@ -17,9 +17,7 @@ export const LoginPage = () => {
 	}, [navigate, authorizationStatus]);
 
 	return (
-		<div className="page page--gray page--login">
-			<Header withNav={false} />
-
+		<PageWrapper lightHeader className='page--gray page--login'>
 			<main className="page__main page__main--login">
 				<div className="page__login-container container">
 					<section className="login">
@@ -35,6 +33,6 @@ export const LoginPage = () => {
 					</section>
 				</div>
 			</main>
-		</div>
+		</PageWrapper>
 	);
 };

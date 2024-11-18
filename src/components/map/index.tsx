@@ -9,13 +9,14 @@ import {
 	DEFAULT_MAP_ZOOM
 } from '../../constants/map';
 import 'leaflet/dist/leaflet.css';
-import { Cities } from '../../types/cities';
+import type { Cities } from '../../types/cities';
+import type { OfferInfo } from '../../types/offer-info';
 
 type Props = {
 	width?: string;
 	height?: string;
 	offers: Offer[];
-	selectedOffer?: Offer;
+	selectedOffer?: OfferInfo | Offer;
 	activeCityName: Cities;
 };
 

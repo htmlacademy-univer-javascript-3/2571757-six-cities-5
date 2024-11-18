@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { CityOffers, Header, Spinner } from '../../components';
+import { CityOffers, PageWrapper, Spinner } from '../../components';
 import { CitiesList } from '../../components';
 import { CITIES } from '../../constants/cities.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
@@ -18,9 +18,7 @@ export const MainPage = () => {
 	const sortedOffers = useSortedOffers(offers);
 
 	return (
-		<div className="page page--gray page--main">
-			<Header />
-
+		<PageWrapper className='page--gray page--main'>
 			<main className="page__main page__main--index">
 				<h1 className="visually-hidden">Cities</h1>
 				<CitiesList citiesNames={CITIES} />
@@ -30,7 +28,7 @@ export const MainPage = () => {
 					<CityOffers offers={sortedOffers} />
 				)}
 			</main >
-		</div >
+		</PageWrapper>
 	);
 };
 

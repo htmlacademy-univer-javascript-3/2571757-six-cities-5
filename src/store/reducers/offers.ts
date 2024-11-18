@@ -15,13 +15,13 @@ const initialState: OffersState = {
 	error: null
 };
 
-export const filterReducer = createReducer(
+export const offersReducer = createReducer(
 	initialState,
 	(builder) => {
 		builder
 			.addCase(fetchOffers.pending, (state) => {
-				state.offers = initialState.offers;
 				state.loading = true;
+				state.error = null;
 			})
 			.addCase(fetchOffers.fulfilled, (state, action: PayloadAction<Offer[]>) => {
 				state.offers = action.payload;
@@ -29,11 +29,10 @@ export const filterReducer = createReducer(
 				state.error = null;
 			})
 			.addCase(fetchOffers.rejected, (state, action) => {
-				state.offers = initialState.offers;
 				state.loading = false;
 				state.error = action.error.message || 'Something went wrong';
 			});
 	}
 );
 
-export default filterReducer;
+export default offersReducer;
