@@ -2,17 +2,17 @@ import { Spinner, FeedbackBlock } from '../../../../components';
 import { calculateRatingWidth } from '../../../../utils/calculate-rating-width';
 import { capitalize } from '../../../../utils/capitalize';
 import { OfferInfo as OfferInfoType } from '../../../../types/offer-info';
-import { useAppSelector } from '../../../../store/hooks';
-import { selectAuthReducerData } from '../../../../store/selectors';
+import { pluralize } from '../../helpers';
+
+const MAX_PREVIEW_IMAGES_AMOUNT = 6;
 
 type Props = {
 	loading: boolean;
 	offerInfo?: OfferInfoType;
 }
 
-export const OfferInfo = ({ offerInfo, loading }: Props) => {
-	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
+export const OfferInfo = ({ offerInfo, loading }: Props) => {
 	if (!offerInfo || loading) {
 		return <Spinner size='l' />;
 	}
@@ -21,7 +21,7 @@ export const OfferInfo = ({ offerInfo, loading }: Props) => {
 		<section className="offer">
 			<div className="offer__gallery-container container">
 				<div className="offer__gallery">
-					{offerInfo.images.map((image) => (
+					{offerInfo.images.slice(0, MAX_PREVIEW_IMAGES_AMOUNT).map((image) => (
 						<div key={image} className="offer__image-wrapper">
 							<img className="offer__image" src={image} alt="Offer Photo" />
 						</div>
@@ -58,10 +58,10 @@ export const OfferInfo = ({ offerInfo, loading }: Props) => {
 							{capitalize(offerInfo.type)}
 						</li>
 						<li className="offer__feature offer__feature--bedrooms">
-							{offerInfo.bedrooms} Bedrooms
+							{pluralize(offerInfo.bedrooms, ['Bedroom', 'Bedrooms'])}
 						</li>
 						<li className="offer__feature offer__feature--adults">
-							Max {offerInfo.maxAdults} adults
+							Max {pluralize(offerInfo.maxAdults, ['adult', 'adults'])}
 						</li>
 					</ul>
 					<div className="offer__price">
@@ -99,9 +99,7 @@ export const OfferInfo = ({ offerInfo, loading }: Props) => {
 							</p>
 						</div>
 					</div>
-					{authorizationStatus === 'authorized' && (
-						<FeedbackBlock offerId={offerInfo.id} />
-					)}
+					<FeedbackBlock offerId={offerInfo.id} />
 				</div>
 			</div>
 		</section>

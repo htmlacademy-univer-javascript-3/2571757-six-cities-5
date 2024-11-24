@@ -29,7 +29,7 @@ export const FavoritesPage = () => {
 					<section className="favorites">
 						<h1 className="favorites__title">Saved listing</h1>
 						<ul className="favorites__list">
-							{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, offersForCity]) => (
+							{Object.keys(offersSplittedByCity).length ? Object.entries(offersSplittedByCity).map(([cityName, offersForCity]) => (
 								<li className="favorites__locations-items" key={cityName}>
 									<div className="favorites__locations locations locations--current">
 										<div className="locations__item">
@@ -44,7 +44,11 @@ export const FavoritesPage = () => {
 										<OffersList offers={offersForCity} type='favorites' />
 									)}
 								</li>
-							))}
+							)) : (
+								<li className="favorites__locations-items">
+									No saved offers
+								</li>
+							)}
 						</ul>
 					</section>
 				</div>

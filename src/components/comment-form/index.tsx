@@ -4,6 +4,7 @@ import { useActions } from '../../store/hooks';
 import { CommentFormState } from '../../types/comment';
 
 const MIN_COMMENT_MESSAGE_LENGTH = 50;
+const MAX_COMMENT_MESSAGE_LENGTH = 300;
 const RATING_VARIANTS = [5, 4, 3, 2, 1];
 
 type Props = {
@@ -51,7 +52,12 @@ export const CommentForm = ({ offerId }: Props) => {
 	}, [formData, postOfferComment, offerId]);
 
 	const isSubmitDisabled = useMemo(() => {
-		return !(typeof formData.rating === 'number' && formData.comment && formData.comment.length >= MIN_COMMENT_MESSAGE_LENGTH);
+		return !(
+			typeof formData.rating === 'number' &&
+			formData.comment &&
+			formData.comment.length >= MIN_COMMENT_MESSAGE_LENGTH &&
+			formData.comment.length <= MAX_COMMENT_MESSAGE_LENGTH
+		);
 	}, [formData]);
 
 	return (

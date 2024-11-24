@@ -5,13 +5,14 @@ import { useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData } from '../../store/selectors';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../constants/routes';
+import { AuthorizationStatus } from '../../types/auth';
 
 export const LoginPage = () => {
 	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (authorizationStatus === 'authorized') {
+		if (authorizationStatus === AuthorizationStatus.Authorized) {
 			navigate(AppRoutes.Default);
 		}
 	}, [navigate, authorizationStatus]);

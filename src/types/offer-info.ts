@@ -1,4 +1,4 @@
-import type { OfferCity, OfferLocation } from './offer';
+import type { OfferCity, OfferLocation, OfferType } from './offer';
 
 type OfferHost = {
 	name: string;
@@ -9,7 +9,7 @@ type OfferHost = {
 export type OfferInfo = {
 	id: string;
 	title: string;
-	type: string;
+	type: OfferType;
 	price: number;
 	city: OfferCity;
 	location: OfferLocation;

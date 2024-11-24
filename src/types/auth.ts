@@ -1,5 +1,10 @@
 import { UserData } from './user';
 
+export enum AuthorizationStatus {
+	Authorized = 'authorized',
+	Unauthorized = 'unauthorized'
+}
+
 export type AuthorizationRequestDto = {
 	email: string;
 	password: string;

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../constants/routes';
 import { useActions, useAppSelector } from '../../store/hooks';
-import { selectAuthReducerData } from '../../store/selectors';
+import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
+import { AuthorizationStatus } from '../../types/auth';
+import styles from './styles.module.css';
 
 type Props = {
 	withNav?: boolean;
@@ -9,6 +11,7 @@ type Props = {
 
 export const Header = ({ withNav = true }: Props) => {
 	const { authorizationStatus, userData } = useAppSelector(selectAuthReducerData);
+	const { favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
 	const { logout } = useActions();
 
 	const handleLogoutButtonClick = () => {
@@ -27,7 +30,7 @@ export const Header = ({ withNav = true }: Props) => {
 					{withNav && (
 						<nav className="header__nav">
 							<ul className="header__nav-list">
-								{authorizationStatus === 'authorized' ? (
+								{authorizationStatus === AuthorizationStatus.Authorized ? (
 									<>
 										<li className="header__nav-item user">
 											<Link className="header__nav-link header__nav-link--profile" to={AppRoutes.Favorites}>
@@ -35,13 +38,11 @@ export const Header = ({ withNav = true }: Props) => {
 													{userData.avatarUrl && <img className="header__avatar user__avatar" src={userData.avatarUrl} width="54" height="54" alt="User avatar" />}
 												</div>
 												{userData.email && <span className="header__user-name user__name">{userData.email}</span>}
-												<span className="header__favorite-count">3</span>
+												<span className="header__favorite-count">{favoritesOffers.length}</span>
 											</Link>
 										</li>
-										<li className="header__nav-item" onClick={handleLogoutButtonClick}>
-											<a className="header__nav-link" href="#">
-												<span className="header__signout">Sign out</span>
-											</a>
+										<li className={`${styles.signout} header__nav-item header__nav-link`} onClick={handleLogoutButtonClick}>
+											<span className="header__signout">Sign out</span>
 										</li>
 									</>
 								) : (

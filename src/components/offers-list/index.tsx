@@ -24,6 +24,6 @@ export const OffersList = ({ offers, type = 'default', onOfferHover }: Props) =>
 			{offers.length && offers.map((offer) => {
 				return <OfferCard key={offer.id} previewType={type} {...offer} onHover={onOfferHover} />;
 			})}
-		</div>
+		</div >
 	);
 };

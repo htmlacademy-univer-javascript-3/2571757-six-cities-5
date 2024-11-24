@@ -13,6 +13,7 @@ import { handleTokenInLocalStorage, removeToken } from './utils';
 import { Actions } from '../constants/actions';
 import api from '../api';
 import { CommentFormState } from '../types/comment';
+import { sortCommentsByDate } from '../utils/sort-by-date';
 
 export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<unknown>>(
 	Actions.CHECK_AUTH_STATUS,
@@ -97,7 +98,7 @@ export const fetchNearestOffers = createAsyncThunk<Offer[], { offerId: string },
 );
 
 export const fetchFavoritesOffers = createAsyncThunk<Offer[], void, ThunkConfig<unknown>>(
-	Actions.FETCH_OFFERS,
+	Actions.FETCH_FAVORITES_OFFERS,
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await api.get<Offer[]>(Paths.FetchFavoritesOffers);
@@ -115,7 +116,7 @@ export const fetchOfferComments = createAsyncThunk<Comment[], { offerId: string 
 		try {
 			const response = await api.get<Comment[]>(Paths.OfferComments.replace('{offerId}', offerId));
 
-			return response.data;
+			return sortCommentsByDate(response.data);
 		} catch (error) {
 			return rejectWithValue(error);
 		}

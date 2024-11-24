@@ -1,19 +1,19 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { authorize, checkAuthStatus, logout } from '../action';
 import { UserData } from '../../types/user';
-import { ValidationErrorDto } from '../../types/auth';
+import { AuthorizationStatus, ValidationErrorDto } from '../../types/auth';
 
 type ValidationErrorData = Record<string, string>;
 
 interface AuthState {
     loading: boolean;
-    authorizationStatus: 'authorized' | 'unauthorized';
+    authorizationStatus: AuthorizationStatus;
     validationErrors?: ValidationErrorData;
     userData: Partial<UserData>;
 }
 
 const initialState: AuthState = {
-	authorizationStatus: 'unauthorized',
+	authorizationStatus: AuthorizationStatus.Unauthorized,
 	loading: false,
 	validationErrors: undefined,
 	userData: {}
@@ -33,12 +33,11 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.loading = true;
 		})
 		.addCase(checkAuthStatus.fulfilled, (state, { payload }) => {
-			state.authorizationStatus = 'authorized';
+			state.authorizationStatus = AuthorizationStatus.Authorized;
 			state.userData = payload;
 			state.loading = false;
 		})
 		.addCase(checkAuthStatus.rejected, (state) => {
-			state.authorizationStatus = 'unauthorized';
 			state.loading = false;
 		})
 
@@ -48,7 +47,7 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.validationErrors = undefined;
 		})
 		.addCase(authorize.fulfilled, (state, { payload }) => {
-			state.authorizationStatus = 'authorized';
+			state.authorizationStatus = AuthorizationStatus.Authorized;
 			state.userData = payload;
 			state.loading = false;
 		})
@@ -63,7 +62,7 @@ const authReducer = createReducer(initialState, (builder) => {
 			state.loading = true;
 		})
 		.addCase(logout.fulfilled, (state) => {
-			state.authorizationStatus = 'unauthorized';
+			state.authorizationStatus = AuthorizationStatus.Unauthorized;
 			state.loading = false;
 		})
 		.addCase(logout.rejected, (state) => {
