@@ -8,6 +8,7 @@ import { PrivateRoute } from '../../components/private-route';
 import { Page404 } from '../../pages/errors';
 import { AppRoutes } from '../../constants/routes.ts';
 import { useActions } from '../../store/hooks.ts';
+import { Layout } from '../../components/layout/index.tsx';
 
 export const Router = () => {
 	const { checkAuthStatus } = useActions();
@@ -19,7 +20,7 @@ export const Router = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path={AppRoutes.Default}>
+				<Route path={AppRoutes.Default} element={<Layout />}>
 					<Route index element={<MainPage />} />
 					<Route path={AppRoutes.Login} element={<LoginPage />} />
 					<Route path={AppRoutes.Favorites} element={(

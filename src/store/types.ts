@@ -15,3 +15,15 @@ export type ThunkConfig<T> = {
     dispatch?: Dispatch;
     state: RootState;
 }
+
+export type RequestStatus = {
+	loading: boolean;
+	error?: string | null;
+	validationErrors?: Record<string, string>;
+};
+
+export type ErrorResponse = {
+	errorType?: string;
+	message?: string;
+	details?: { property: string; value: string; messages: string[] }[];
+}

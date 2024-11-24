@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
 import { fetchNearestOffers } from '../action';
@@ -15,9 +15,11 @@ const initialState: OffersState = {
 	error: null
 };
 
-export const nearestOffersReducer = createReducer(
+const nearestOffersSlice = createSlice({
+	name: 'nearestOffers',
 	initialState,
-	(builder) => {
+	reducers: {},
+	extraReducers: (builder) => {
 		builder
 			.addCase(fetchNearestOffers.pending, (state) => {
 				state.loading = true;
@@ -33,6 +35,6 @@ export const nearestOffersReducer = createReducer(
 				state.error = action.error.message || 'Something went wrong';
 			});
 	}
-);
+});
 
-export default nearestOffersReducer;
+export const { reducer: nearestOffersReducer } = nearestOffersSlice;

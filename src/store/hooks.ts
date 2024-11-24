@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from './types';
 import * as actions from './action';
+import { commonActions } from './reducers/common';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const reduxActions = {
-	...actions
+	...actions,
+	...commonActions
 };
 
 export const useActions = () => {

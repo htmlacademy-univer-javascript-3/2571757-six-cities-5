@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { SignInFormState } from './types';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData } from '../../store/selectors';
@@ -6,12 +7,18 @@ import { Spinner } from '../spinner';
 import styles from './styles.module.css';
 
 export const SignInForm = () => {
-	const { loading, validationErrors } = useAppSelector(selectAuthReducerData);
+	const { authorizeStatus: { loading, error, validationErrors } } = useAppSelector(selectAuthReducerData);
 	const { authorize } = useActions();
 	const [formData, setFormData] = useState<SignInFormState>({
 		email: '',
 		password: ''
 	});
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
 
 	const handleFieldChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = evt.target;

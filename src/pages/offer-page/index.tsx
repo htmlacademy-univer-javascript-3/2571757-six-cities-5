@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PageWrapper } from '../../components';
 import { NearestOffers } from './components/nearest-offers/index.tsx';
 import { OfferInfo } from './components/offer-info/index.tsx';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
@@ -26,11 +25,9 @@ export const OfferPage = () => {
 	}
 
 	return (
-		<PageWrapper>
-			<main className="page__main page__main--offer">
-				<OfferInfo offerInfo={offerInfo} loading={loading} />
-				<NearestOffers offerInfo={offerInfo} />
-			</main>
-		</PageWrapper>
+		<main className="page__main page__main--offer">
+			<OfferInfo offerInfo={offerInfo} loading={loading} />
+			<NearestOffers offerInfo={offerInfo} />
+		</main>
 	);
 };

@@ -1,6 +1,6 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Offer } from '../../types/offer';
+import type { Offer } from '../../types/offer';
 import { fetchFavoritesOffers } from '../action';
 
 type FavoritesOffersState = {
@@ -15,9 +15,11 @@ const initialState: FavoritesOffersState = {
 	error: null
 };
 
-export const favoriteOffersReducer = createReducer(
+const favoriteOffersSlice = createSlice({
+	name: 'favoriteOffers',
 	initialState,
-	(builder) => {
+	reducers: {},
+	extraReducers: (builder) => {
 		builder
 			.addCase(fetchFavoritesOffers.pending, (state) => {
 				state.loading = true;
@@ -33,6 +35,6 @@ export const favoriteOffersReducer = createReducer(
 				state.error = action.error.message || 'Something went wrong';
 			});
 	}
-);
+});
 
-export default favoriteOffersReducer;
+export const { reducer: favoriteOffersReducer } = favoriteOffersSlice;

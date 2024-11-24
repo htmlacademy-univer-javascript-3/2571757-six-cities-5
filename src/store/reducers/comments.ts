@@ -1,56 +1,60 @@
-import { createReducer } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Comment } from '../../types/comment';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchOfferComments, postOfferComment } from '../action';
+import type { Comment } from '../../types/comment';
+import { ErrorResponse, RequestStatus } from '../types';
 
 type CommentsState = {
-	comments: Comment[];
-	loading: boolean;
-	error: string | null;
-	lastAddedComment: Comment | null;
+    comments: Comment[];
+	fetchStatus: RequestStatus;
+    postStatus: RequestStatus;
 };
 
 const initialState: CommentsState = {
 	comments: [],
-	loading: false,
-	error: null,
-	lastAddedComment: null
+	fetchStatus: {
+		loading: false,
+		error: null
+	},
+	postStatus: {
+		loading: false,
+		error: null
+	}
 };
 
-export const commentsReducer = createReducer(
+const commentsSlice = createSlice({
+	name: 'comments',
 	initialState,
-	(builder) => {
+	reducers: {},
+	extraReducers: (builder) => {
 		builder
 			// fetchOfferComments
 			.addCase(fetchOfferComments.pending, (state) => {
-				state.loading = true;
-				state.comments = [];
+				state.fetchStatus.loading = true;
+				state.fetchStatus.error = null;
 			})
-			.addCase(fetchOfferComments.fulfilled, (state, action: PayloadAction<Comment[]>) => {
+			.addCase(fetchOfferComments.fulfilled, (state, action) => {
+				state.fetchStatus.loading = false;
 				state.comments = action.payload;
-				state.loading = false;
-				state.error = null;
 			})
-			.addCase(fetchOfferComments.rejected, (state, action) => {
-				state.comments = [];
-				state.loading = false;
-				state.error = action.error.message || 'Something went wrong';
+			.addCase(fetchOfferComments.rejected, (state, { payload }) => {
+				state.fetchStatus.loading = false;
+				state.fetchStatus.error = payload?.message;
 			})
+
 			// postOfferComment
 			.addCase(postOfferComment.pending, (state) => {
-				state.loading = true;
+				state.postStatus.loading = true;
+				state.postStatus.error = null;
 			})
-			.addCase(postOfferComment.fulfilled, (state, action: PayloadAction<Comment>) => {
-				state.comments = [...state.comments, action.payload];
-				state.lastAddedComment = action.payload;
-				state.loading = false;
-				state.error = null;
+			.addCase(postOfferComment.fulfilled, (state, action) => {
+				state.postStatus.loading = false;
+				state.comments.unshift(action.payload);
 			})
-			.addCase(postOfferComment.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.error.message || 'Something went wrong';
+			.addCase(postOfferComment.rejected, (state, { payload }: PayloadAction<ErrorResponse | undefined>) => {
+				state.postStatus.loading = false;
+				state.postStatus.error = payload?.message;
 			});
 	}
-);
+});
 
-export default commentsReducer;
+export const { reducer: commentsReducer } = commentsSlice;

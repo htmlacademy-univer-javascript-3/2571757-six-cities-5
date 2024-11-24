@@ -1,6 +1,5 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { changeCity, changeSortVariant } from '../action';
 import { Cities } from '../../types/cities';
 import { SortVariant } from '../../types/sort-variants';
 
@@ -14,17 +13,18 @@ const initialState: CommonState = {
 	sortVariant: SortVariant.Popular
 };
 
-export const commonReducer = createReducer(
+const commonSlice = createSlice({
+	name: 'common',
 	initialState,
-	(builder) => {
-		builder
-			.addCase(changeCity, (state, action: PayloadAction<Cities>) => {
-				state.city = action.payload;
-			})
-			.addCase(changeSortVariant, (state, action: PayloadAction<SortVariant>) => {
-				state.sortVariant = action.payload;
-			});
+	reducers: {
+		changeCity(state, action: PayloadAction<Cities>) {
+			state.city = action.payload;
+		},
+		changeSortVariant(state, action: PayloadAction<SortVariant>) {
+			state.sortVariant = action.payload;
+		}
 	}
-);
+});
 
-export default commonReducer;
+export const { actions: commonActions } = commonSlice;
+export const { reducer: commonReducer } = commonSlice;

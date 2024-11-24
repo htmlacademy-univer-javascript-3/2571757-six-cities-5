@@ -1,19 +1,18 @@
-import { AxiosError, AxiosResponse } from 'axios';
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Cities } from '../types/cities';
-import { SortVariant } from '../types/sort-variants';
+import { AxiosResponse } from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { OfferInfo } from '../types/offer-info';
 import { Paths } from '../api/constants';
 import { Offer } from '../types/offer';
 import { Comment } from '../types/comment';
-import { ThunkConfig } from './types';
-import { AuthorizationRequestDto, ValidationErrorDto } from '../types/auth';
+import { ErrorResponse, ThunkConfig } from './types';
+import { AuthorizationRequestDto } from '../types/auth';
 import { UserData } from '../types/user';
 import { handleTokenInLocalStorage, removeToken } from './utils';
 import { Actions } from '../constants/actions';
-import api from '../api';
 import { CommentFormState } from '../types/comment';
 import { sortCommentsByDate } from '../utils/sort-by-date';
+import { handleApiError } from './utils/handle-api-error';
+import api from '../api';
 
 export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<unknown>>(
 	Actions.CHECK_AUTH_STATUS,
@@ -29,7 +28,7 @@ export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<unkn
 	}
 );
 
-export const authorize = createAsyncThunk<UserData, AuthorizationRequestDto, ThunkConfig<AxiosError<ValidationErrorDto>>>(
+export const authorize = createAsyncThunk<UserData, AuthorizationRequestDto, ThunkConfig<ErrorResponse>>(
 	Actions.AUTHORIZE,
 	async ({ email, password }, { rejectWithValue }) => {
 		try {
@@ -38,7 +37,7 @@ export const authorize = createAsyncThunk<UserData, AuthorizationRequestDto, Thu
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error as AxiosError<ValidationErrorDto>);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
@@ -50,12 +49,12 @@ export const logout = createAsyncThunk<void, void, ThunkConfig<unknown>>(
 			await api.delete(Paths.Logout);
 			removeToken();
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const fetchOfferInfo = createAsyncThunk<OfferInfo, { offerId: string }, ThunkConfig<unknown>>(
+export const fetchOfferInfo = createAsyncThunk<OfferInfo, { offerId: string }, ThunkConfig<ErrorResponse>>(
 	Actions.FETCH_OFFER,
 	async ({ offerId }, { rejectWithValue }) => {
 		try {
@@ -63,12 +62,12 @@ export const fetchOfferInfo = createAsyncThunk<OfferInfo, { offerId: string }, T
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const fetchOffers = createAsyncThunk<Offer[], void, ThunkConfig<unknown>>(
+export const fetchOffers = createAsyncThunk<Offer[], void, ThunkConfig<ErrorResponse>>(
 	Actions.FETCH_OFFERS,
 	async (_, { rejectWithValue, getState }) => {
 		const city = getState().common.city;
@@ -79,12 +78,12 @@ export const fetchOffers = createAsyncThunk<Offer[], void, ThunkConfig<unknown>>
 
 			return filteredOffers;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const fetchNearestOffers = createAsyncThunk<Offer[], { offerId: string }, ThunkConfig<unknown>>(
+export const fetchNearestOffers = createAsyncThunk<Offer[], { offerId: string }, ThunkConfig<ErrorResponse>>(
 	Actions.FETCH_NEAREST_OFFERS,
 	async ({ offerId }, { rejectWithValue }) => {
 		try {
@@ -92,12 +91,12 @@ export const fetchNearestOffers = createAsyncThunk<Offer[], { offerId: string },
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const fetchFavoritesOffers = createAsyncThunk<Offer[], void, ThunkConfig<unknown>>(
+export const fetchFavoritesOffers = createAsyncThunk<Offer[], void, ThunkConfig<ErrorResponse>>(
 	Actions.FETCH_FAVORITES_OFFERS,
 	async (_, { rejectWithValue }) => {
 		try {
@@ -105,12 +104,12 @@ export const fetchFavoritesOffers = createAsyncThunk<Offer[], void, ThunkConfig<
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const fetchOfferComments = createAsyncThunk<Comment[], { offerId: string }, ThunkConfig<unknown>>(
+export const fetchOfferComments = createAsyncThunk<Comment[], { offerId: string }, ThunkConfig<ErrorResponse>>(
 	Actions.FETCH_OFFER_COMMENTS,
 	async ({ offerId }, { rejectWithValue }) => {
 		try {
@@ -118,12 +117,12 @@ export const fetchOfferComments = createAsyncThunk<Comment[], { offerId: string 
 
 			return sortCommentsByDate(response.data);
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
 
-export const postOfferComment = createAsyncThunk<Comment, { offerId: string } & CommentFormState, ThunkConfig<unknown>>(
+export const postOfferComment = createAsyncThunk<Comment, { offerId: string } & CommentFormState, ThunkConfig<ErrorResponse>>(
 	Actions.POST_OFFER_COMMENT,
 	async ({ offerId, comment, rating }, { rejectWithValue }) => {
 		try {
@@ -131,11 +130,7 @@ export const postOfferComment = createAsyncThunk<Comment, { offerId: string } & 
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
-
-export const changeCity = createAction<Cities>(Actions.CHANGE_CITY);
-
-export const changeSortVariant = createAction<SortVariant>(Actions.CHANGE_SORT_VARIANT);

@@ -22,4 +22,4 @@ export type ValidationErrorDto = {
 	errorType: string;
 	message: string;
 	details: ValidationErrorDetails[];
-  };
+};

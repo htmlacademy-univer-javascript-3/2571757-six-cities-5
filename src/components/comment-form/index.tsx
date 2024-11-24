@@ -1,7 +1,9 @@
-import { useReducer, useCallback, useMemo, Fragment } from 'react';
+import { useReducer, useCallback, Fragment, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { getRatingTitle } from './utils';
-import { useActions } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../store/hooks';
 import { CommentFormState } from '../../types/comment';
+import { selectCommentsReducerData } from '../../store/selectors';
 
 const MIN_COMMENT_MESSAGE_LENGTH = 50;
 const MAX_COMMENT_MESSAGE_LENGTH = 300;
@@ -36,6 +38,13 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
 export const CommentForm = ({ offerId }: Props) => {
 	const { postOfferComment } = useActions();
 	const [formData, dispatch] = useReducer(formReducer, initialFormData);
+	const { postStatus: { loading, error } } = useAppSelector(selectCommentsReducerData);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
 
 	const handleFieldChange = useCallback((evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = evt.target;
@@ -51,14 +60,13 @@ export const CommentForm = ({ offerId }: Props) => {
 		}
 	}, [formData, postOfferComment, offerId]);
 
-	const isSubmitDisabled = useMemo(() => {
-		return !(
-			typeof formData.rating === 'number' &&
-			formData.comment &&
-			formData.comment.length >= MIN_COMMENT_MESSAGE_LENGTH &&
-			formData.comment.length <= MAX_COMMENT_MESSAGE_LENGTH
-		);
-	}, [formData]);
+	const isSubmitDisabled = !(
+		typeof formData.rating === 'number' &&
+		formData.comment &&
+		formData.comment.length >= MIN_COMMENT_MESSAGE_LENGTH &&
+		formData.comment.length <= MAX_COMMENT_MESSAGE_LENGTH ||
+		loading
+	);
 
 	return (
 		<form className="reviews__form form" onSubmit={handleSubmit}>

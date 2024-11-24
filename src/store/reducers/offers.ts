@@ -1,6 +1,6 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Offer } from '../../types/offer';
+import type { Offer } from '../../types/offer';
 import { fetchOffers } from '../action';
 
 type OffersState = {
@@ -15,9 +15,11 @@ const initialState: OffersState = {
 	error: null
 };
 
-export const offersReducer = createReducer(
+const offersSlice = createSlice({
+	name: 'offers',
 	initialState,
-	(builder) => {
+	reducers: {},
+	extraReducers: (builder) => {
 		builder
 			.addCase(fetchOffers.pending, (state) => {
 				state.loading = true;
@@ -33,6 +35,6 @@ export const offersReducer = createReducer(
 				state.error = action.error.message || 'Something went wrong';
 			});
 	}
-);
+});
 
-export default offersReducer;
+export const { reducer: offersReducer } = offersSlice;

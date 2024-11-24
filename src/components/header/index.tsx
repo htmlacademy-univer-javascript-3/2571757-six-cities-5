@@ -4,6 +4,7 @@ import { useActions, useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
 import { AuthorizationStatus } from '../../types/auth';
 import styles from './styles.module.css';
+import { useEffect } from 'react';
 
 type Props = {
 	withNav?: boolean;
@@ -12,7 +13,11 @@ type Props = {
 export const Header = ({ withNav = true }: Props) => {
 	const { authorizationStatus, userData } = useAppSelector(selectAuthReducerData);
 	const { favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
-	const { logout } = useActions();
+	const { logout, fetchFavoritesOffers } = useActions();
+
+	useEffect(() => {
+		fetchFavoritesOffers();
+	}, [fetchFavoritesOffers]);
 
 	const handleLogoutButtonClick = () => {
 		logout();
@@ -35,9 +40,9 @@ export const Header = ({ withNav = true }: Props) => {
 										<li className="header__nav-item user">
 											<Link className="header__nav-link header__nav-link--profile" to={AppRoutes.Favorites}>
 												<div className="header__avatar-wrapper user__avatar-wrapper">
-													{userData.avatarUrl && <img className="header__avatar user__avatar" src={userData.avatarUrl} width="54" height="54" alt="User avatar" />}
+													{userData?.avatarUrl && <img className="header__avatar user__avatar" src={userData?.avatarUrl} width="54" height="54" alt="User avatar" />}
 												</div>
-												{userData.email && <span className="header__user-name user__name">{userData.email}</span>}
+												{userData?.email && <span className="header__user-name user__name">{userData?.email}</span>}
 												<span className="header__favorite-count">{favoritesOffers.length}</span>
 											</Link>
 										</li>
