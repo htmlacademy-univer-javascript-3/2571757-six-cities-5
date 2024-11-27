@@ -1,6 +1,6 @@
 import { Cities } from './cities';
 
-type OfferType = 'apartment';
+export type OfferType = 'apartment' | 'room' | 'house' | 'hotel';
 
 export type OfferLocation = {
 	latitude: number;

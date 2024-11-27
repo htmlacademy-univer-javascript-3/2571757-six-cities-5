@@ -11,3 +11,8 @@ export type Comment = {
 	comment: string;
 	rating: number;
 };
+
+export type CommentFormState = {
+	rating: number;
+	comment: string;
+};

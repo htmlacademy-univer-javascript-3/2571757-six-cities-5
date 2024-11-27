@@ -1,3 +1,3 @@
 export const calculateRatingWidth = (rating: number): string => {
-	return `${rating * 20}%`;
+	return `${Math.round(rating) * 20}%`;
 };
