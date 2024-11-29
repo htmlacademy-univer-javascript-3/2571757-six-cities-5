@@ -7,15 +7,25 @@ import { OfferPage } from '../../pages/offer-page';
 import { PrivateRoute } from '../../components/private-route';
 import { Page404 } from '../../pages/errors';
 import { AppRoutes } from '../../constants/routes.ts';
-import { useActions } from '../../store/hooks.ts';
+import { useActions, useAppSelector } from '../../store/hooks.ts';
 import { Layout } from '../../components/layout/index.tsx';
+import { selectAuthReducerData } from '../../store/selectors.ts';
+import { AuthorizationStatus } from '../../types/auth.ts';
 
 export const Router = () => {
-	const { checkAuthStatus } = useActions();
+	const { checkAuthStatus, fetchFavoritesOffers } = useActions();
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
 	useEffect(() => {
 		checkAuthStatus();
 	}, [checkAuthStatus]);
+
+	useEffect(() => {
+		if (authorizationStatus === AuthorizationStatus.Authorized) {
+			fetchFavoritesOffers();
+		}
+	}, [authorizationStatus, fetchFavoritesOffers]);
+
 
 	return (
 		<BrowserRouter>

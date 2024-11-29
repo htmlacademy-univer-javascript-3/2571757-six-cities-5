@@ -4,7 +4,6 @@ import { useActions, useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
 import { AuthorizationStatus } from '../../types/auth';
 import styles from './styles.module.css';
-import { useEffect } from 'react';
 
 type Props = {
 	withNav?: boolean;
@@ -13,11 +12,7 @@ type Props = {
 export const Header = ({ withNav = true }: Props) => {
 	const { authorizationStatus, userData } = useAppSelector(selectAuthReducerData);
 	const { favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
-	const { logout, fetchFavoritesOffers } = useActions();
-
-	useEffect(() => {
-		fetchFavoritesOffers();
-	}, [fetchFavoritesOffers]);
+	const { logout } = useActions();
 
 	const handleLogoutButtonClick = () => {
 		logout();
