@@ -1,13 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
 import { OffersList, Spinner } from '../../components';
-import { useActions, useAppSelector } from '../../store/hooks.ts';
+import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
 import { NoFavoritesOffersSlug } from './components/no-favorites-offers-slug/index.tsx';
 
 export const FavoritesPage = () => {
 	const { loading, favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
-	const { fetchFavoritesOffers } = useActions();
 
 	const offersSplittedByCity = useMemo(() => {
 		return favoritesOffers.reduce((acc, currOffer) => {
@@ -18,12 +17,6 @@ export const FavoritesPage = () => {
 			return acc;
 		}, {} as Record<Offer['city']['name'], Offer[]>);
 	}, [favoritesOffers]);
-
-	useEffect(() => {
-		if (!favoritesOffers.length) {
-			fetchFavoritesOffers();
-		}
-	}, [fetchFavoritesOffers, favoritesOffers]);
 
 	if (loading) {
 		return (
