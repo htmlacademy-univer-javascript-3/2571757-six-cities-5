@@ -5,9 +5,9 @@ export const DEFAULT_MAP_ZOOM = 14;
 
 // Маркеры
 const URL_MARKER_DEFAULT =
-  '../../public/img/pin.svg';
+  '/img/pin.svg';
 const URL_MARKER_CURRENT =
-  '../../public/img/pin-active.svg';
+  '/img/pin-active.svg';
 
 export const defaultCustomIcon = new Icon({
 	iconUrl: URL_MARKER_DEFAULT,
