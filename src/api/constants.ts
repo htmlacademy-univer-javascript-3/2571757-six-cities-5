@@ -1,8 +1,8 @@
 export enum Paths {
-	FetchOffers = '/offers',
-	FetchOfferInfo = '/offers/{offerId}',
-	FetchNearestOffers = '/offers/{offerId}/nearby',
-	FetchFavoritesOffers = '/favorite',
+	Offers = '/offers',
+	OfferInfo = '/offers/{offerId}',
+	NearestOffers = '/offers/{offerId}/nearby',
+	FavoritesOffers = '/favorite',
 	Login = '/login',
 	Logout = '/logout',
 	OfferComments = '/comments/{offerId}'

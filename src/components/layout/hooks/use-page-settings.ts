@@ -10,7 +10,8 @@ type PageSettings = {
 
 const pageContainerClasses = {
 	[AppRoutes.Default]: 'page--gray page--main',
-	[AppRoutes.Login]: 'page--gray page--login'
+	[AppRoutes.Login]: 'page--gray page--login',
+	[AppRoutes.Favorites]: 'page--favorites-empty'
 };
 
 export const usePageSettings = (): PageSettings => {
@@ -24,6 +25,8 @@ export const usePageSettings = (): PageSettings => {
 		pageContainerClassName = pageContainerClasses[AppRoutes.Default];
 	} else if (isSigninPage) {
 		pageContainerClassName = pageContainerClasses[AppRoutes.Login];
+	} else if (isFavoritesPage) {
+		pageContainerClassName = pageContainerClasses[AppRoutes.Favorites];
 	}
 
 	return {

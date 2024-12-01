@@ -26,5 +26,10 @@ export type Offer = {
 	previewImage: string;
 };
 
+export enum OfferRequestStatus {
+	Remove = 0,
+	Add = 1
+}
+
 export type OfferPreviewType = 'favorites' | 'nearest' | 'default';
 

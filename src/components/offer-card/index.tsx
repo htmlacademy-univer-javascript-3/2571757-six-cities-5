@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom';
-import type { Offer, OfferPreviewType } from '../../types/offer.ts';
+import { Link, useNavigate } from 'react-router-dom';
+import { OfferRequestStatus, type Offer, type OfferPreviewType } from '../../types/offer.ts';
 import { AppRoutes } from '../../constants/routes.ts';
 import { calculateRatingWidth } from '../../utils/calculate-rating-width.ts';
+import { useActions, useAppSelector } from '../../store/hooks.ts';
+import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors.ts';
+import { AuthorizationStatus } from '../../types/auth.ts';
 
 type Props = {
 	previewType: OfferPreviewType;
@@ -18,10 +21,16 @@ export const OfferCard = (props: Props) => {
 		rating,
 		previewType,
 		isPremium,
+		isFavorite,
 		onHover
 	} = props;
+	const navigate = useNavigate();
 	const isDefaultOfferType = previewType === 'default';
 	const isNearestOfferType = previewType === 'nearest';
+	const isFavoriteOfferType = previewType === 'favorites';
+	const { changeFavoriteStatus } = useActions();
+	const { postStatus: { loading } } = useAppSelector(selectFavoriteOffersReducerData);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
 	const calculateClassName = (listType: OfferPreviewType) => {
 		switch (listType) {
@@ -42,6 +51,17 @@ export const OfferCard = (props: Props) => {
 		onHover?.(undefined);
 	};
 
+	const handleFavoriteButtonClick = () => {
+		if (authorizationStatus === AuthorizationStatus.Unauthorized) {
+			navigate(AppRoutes.Login);
+			return;
+		}
+
+		const requestStatus = isFavorite ? OfferRequestStatus.Remove : OfferRequestStatus.Add;
+
+		changeFavoriteStatus({ offerId: id, status: requestStatus });
+	};
+
 	return (
 		<article className={`${calculateClassName(previewType)}__card place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 			{isDefaultOfferType && (
@@ -55,7 +75,13 @@ export const OfferCard = (props: Props) => {
 			)}
 			<div className={`${calculateClassName(previewType)}__image-wrapper place-card__image-wrapper`}>
 				<Link to={`${AppRoutes.Offer}/${id}`} replace={isNearestOfferType}>
-					<img className="place-card__image" src={previewImage} width="260" height="200" alt={`${title} place image`} />
+					<img
+						className="place-card__image"
+						src={previewImage}
+						width={isFavoriteOfferType ? '150' : '260'}
+						height={isFavoriteOfferType ? '110' : '200'}
+						alt={`${title} place image`}
+					/>
 				</Link>
 			</div>
 			<div className="place-card__info">
@@ -64,11 +90,16 @@ export const OfferCard = (props: Props) => {
 						<b className="place-card__price-value">&euro;{price}</b>
 						<span className="place-card__price-text">&#47;&nbsp;night</span>
 					</div>
-					<button className="place-card__bookmark-button button" type="button">
+					<button
+						disabled={loading}
+						className={`place-card__bookmark-button button ${isFavorite && 'place-card__bookmark-button--active'}`}
+						type="button"
+						onClick={handleFavoriteButtonClick}
+					>
 						<svg className="place-card__bookmark-icon" width="18" height="19">
 							<use xlinkHref="#icon-bookmark"></use>
 						</svg>
-						<span className="visually-hidden">{isDefaultOfferType ? 'To' : 'In'} bookmarks</span>
+						<span className="visually-hidden">{isFavorite ? 'In' : 'To'} bookmarks</span>
 					</button>
 				</div>
 				<div className="place-card__rating rating">

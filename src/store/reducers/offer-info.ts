@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { fetchOfferInfo } from '../action';
+import { changeFavoriteStatus, fetchOfferInfo } from '../action';
 import { OfferInfo } from '../../types/offer-info';
 
 type OfferInfoState = {
@@ -33,6 +33,14 @@ const offerInfoSlice = createSlice({
 			.addCase(fetchOfferInfo.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.error.message || 'Something went wrong';
+			})
+			.addCase(changeFavoriteStatus.fulfilled, (state, action: PayloadAction<OfferInfo>) => {
+				const updatedOffer = action.payload;
+				const isCurrentOfferUpdated = state.offerInfo?.id === updatedOffer.id;
+
+				if (isCurrentOfferUpdated) {
+					state.offerInfo = updatedOffer;
+				}
 			});
 	}
 });

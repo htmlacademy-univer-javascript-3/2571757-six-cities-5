@@ -1,8 +1,16 @@
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { Spinner, FeedbackBlock } from '../../../../components';
 import { calculateRatingWidth } from '../../../../utils/calculate-rating-width';
 import { capitalize } from '../../../../utils/capitalize';
 import { OfferInfo as OfferInfoType } from '../../../../types/offer-info';
 import { pluralize } from '../../helpers';
+import { OfferRequestStatus } from '../../../../types/offer';
+import { useActions, useAppSelector } from '../../../../store/hooks';
+import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../../../store/selectors';
+import { AuthorizationStatus } from '../../../../types/auth';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../../../constants/routes';
 
 const MAX_PREVIEW_IMAGES_AMOUNT = 6;
 
@@ -13,9 +21,31 @@ type Props = {
 
 
 export const OfferInfo = ({ offerInfo, loading }: Props) => {
+	const navigate = useNavigate();
+	const { changeFavoriteStatus } = useActions();
+	const { postStatus: { loading: changeFavoriteStatusLoading, error } } = useAppSelector(selectFavoriteOffersReducerData);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
+
 	if (!offerInfo || loading) {
 		return <Spinner size='l' />;
 	}
+
+	const handleFavoriteButtonClick = () => {
+		if (authorizationStatus === AuthorizationStatus.Unauthorized) {
+			navigate(AppRoutes.Login);
+			return;
+		}
+
+		const requestStatus = offerInfo.isFavorite ? OfferRequestStatus.Remove : OfferRequestStatus.Add;
+
+		changeFavoriteStatus({ offerId: offerInfo.id, status: requestStatus });
+	};
 
 	return (
 		<section className="offer">
@@ -39,7 +69,12 @@ export const OfferInfo = ({ offerInfo, loading }: Props) => {
 						<h1 className="offer__name">
 							{offerInfo.title}
 						</h1>
-						<button className="offer__bookmark-button button" type="button">
+						<button
+							className={`offer__bookmark-button button ${offerInfo.isFavorite && 'offer__bookmark-button--active'}`}
+							type="button"
+							disabled={changeFavoriteStatusLoading}
+							onClick={handleFavoriteButtonClick}
+						>
 							<svg className="offer__bookmark-icon" width="31" height="33">
 								<use xlinkHref="#icon-bookmark"></use>
 							</svg>

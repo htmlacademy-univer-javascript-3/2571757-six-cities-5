@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { OfferInfo } from '../types/offer-info';
 import { Paths } from '../api/constants';
-import { Offer } from '../types/offer';
+import { Offer, OfferRequestStatus } from '../types/offer';
 import { Comment } from '../types/comment';
 import { ErrorResponse, ThunkConfig } from './types';
 import { AuthorizationRequestDto } from '../types/auth';
@@ -58,7 +58,7 @@ export const fetchOfferInfo = createAsyncThunk<OfferInfo, { offerId: string }, T
 	Actions.FETCH_OFFER,
 	async ({ offerId }, { rejectWithValue }) => {
 		try {
-			const response = await api.get<OfferInfo>(Paths.FetchOfferInfo.replace('{offerId}', offerId));
+			const response = await api.get<OfferInfo>(Paths.OfferInfo.replace('{offerId}', offerId));
 
 			return response.data;
 		} catch (error) {
@@ -73,7 +73,7 @@ export const fetchOffers = createAsyncThunk<Offer[], void, ThunkConfig<ErrorResp
 		const city = getState().common.city;
 
 		try {
-			const response = await api.get<Offer[]>(Paths.FetchOffers);
+			const response = await api.get<Offer[]>(Paths.Offers);
 			const filteredOffers = response.data.filter((offer) => offer.city.name === city);
 
 			return filteredOffers;
@@ -87,7 +87,7 @@ export const fetchNearestOffers = createAsyncThunk<Offer[], { offerId: string },
 	Actions.FETCH_NEAREST_OFFERS,
 	async ({ offerId }, { rejectWithValue }) => {
 		try {
-			const response = await api.get<Offer[]>(Paths.FetchNearestOffers.replace('{offerId}', offerId));
+			const response = await api.get<Offer[]>(Paths.NearestOffers.replace('{offerId}', offerId));
 
 			return response.data;
 		} catch (error) {
@@ -100,7 +100,20 @@ export const fetchFavoritesOffers = createAsyncThunk<Offer[], void, ThunkConfig<
 	Actions.FETCH_FAVORITES_OFFERS,
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await api.get<Offer[]>(Paths.FetchFavoritesOffers);
+			const response = await api.get<Offer[]>(Paths.FavoritesOffers);
+
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(handleApiError(error));
+		}
+	}
+);
+
+export const changeFavoriteStatus = createAsyncThunk<OfferInfo, { offerId: string; status: OfferRequestStatus }, ThunkConfig<ErrorResponse>>(
+	Actions.CHANGE_FAVORITE_STATUS,
+	async ({ offerId, status }, { rejectWithValue }) => {
+		try {
+			const response = await api.post<OfferInfo>(`${Paths.FavoritesOffers}/${offerId}/${status}`);
 
 			return response.data;
 		} catch (error) {

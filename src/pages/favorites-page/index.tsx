@@ -1,12 +1,18 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { Offer } from '../../types/offer.ts';
 import { OffersList, Spinner } from '../../components';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
 import { NoFavoritesOffersSlug } from './components/no-favorites-offers-slug/index.tsx';
+import styles from './styles.module.css';
 
 const FavoritesPage = () => {
-	const { loading, favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
+	const {
+		fetchStatus: { loading },
+		postStatus: { error },
+		favoritesOffers
+	} = useAppSelector(selectFavoriteOffersReducerData);
 
 	const offersSplittedByCity = useMemo(() => {
 		return favoritesOffers.reduce((acc, currOffer) => {
@@ -17,6 +23,12 @@ const FavoritesPage = () => {
 			return acc;
 		}, {} as Record<Offer['city']['name'], Offer[]>);
 	}, [favoritesOffers]);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
 
 	if (loading) {
 		return (
@@ -31,7 +43,7 @@ const FavoritesPage = () => {
 	}
 
 	return (
-		<main className="page__main page__main--favorites">
+		<main className={`page__main page__main--favorites ${styles.page}`}>
 			<div className="page__favorites-container container">
 				<section className="favorites">
 					<h1 className="favorites__title">Saved listing</h1>

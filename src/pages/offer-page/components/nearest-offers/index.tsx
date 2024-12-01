@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { OffersList, Map, Spinner } from '../../../../components';
 import { useActions, useAppSelector } from '../../../../store/hooks';
-import { selectCityName, selectNearestOffersReducerData } from '../../../../store/selectors';
+import { selectAuthReducerData, selectCityName, selectNearestOffersReducerData } from '../../../../store/selectors';
 import { OfferInfo } from '../../../../types/offer-info';
 import { mapOfferInfoIntoOffer } from '../../helpers';
 
@@ -16,6 +16,7 @@ export const NearestOffers = ({ offerInfo }: Props) => {
 	const { nearestOffers, loading } = useAppSelector(selectNearestOffersReducerData);
 	const { fetchNearestOffers } = useActions();
 	const cityName = useAppSelector(selectCityName);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
 	useEffect(() => {
 		if (!offerInfo?.id) {
@@ -23,7 +24,7 @@ export const NearestOffers = ({ offerInfo }: Props) => {
 		}
 
 		fetchNearestOffers({ offerId: offerInfo.id });
-	}, [offerInfo?.id, fetchNearestOffers]);
+	}, [offerInfo?.id, fetchNearestOffers, authorizationStatus]);
 
 	if (!nearestOffers || loading) {
 		return <Spinner size='l' />;

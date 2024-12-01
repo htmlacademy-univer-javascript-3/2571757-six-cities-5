@@ -23,19 +23,21 @@ export const CityOffers = ({ offers }: Props) => {
 
 	const hoveredOffer = useMemo(() => offers.find((offer) => offer.id === hoveredOfferId), [offers, hoveredOfferId]);
 
+	if (isOffersListEmpty) {
+		return (
+			<NoOffersSlug />
+		);
+	}
+
 	return (
 		<div className="cities">
 			<div className={`cities__places-container container ${isOffersListEmpty && 'cities__places-container--empty'}`}>
-				{isOffersListEmpty ? (
-					<NoOffersSlug />
-				) : (
-					<section className="cities__places places">
-						<h2 className="visually-hidden">Places</h2>
-						<b className="places__found">{offersAmount} places to stay in {cityName}</b>
-						<SortForm />
-						{offers.length && <OffersList offers={offers} type='default' onOfferHover={handleOfferHover} />}
-					</section>
-				)}
+				<section className="cities__places places">
+					<h2 className="visually-hidden">Places</h2>
+					<b className="places__found">{offersAmount} places to stay in {cityName}</b>
+					<SortForm />
+					{offers.length && <OffersList offers={offers} type='default' onOfferHover={handleOfferHover} />}
+				</section>
 				<div className="cities__right-section">
 					<section className="cities__map">
 						{offers.length && <Map offers={offers} activeCityName={cityName} selectedOffer={hoveredOffer} />}
