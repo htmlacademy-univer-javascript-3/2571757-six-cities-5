@@ -6,7 +6,7 @@ import { useActions, useAppSelector } from '../../store/hooks.ts';
 import { selectOfferInfoReducerData } from '../../store/selectors.ts';
 import { AppRoutes } from '../../constants/routes.ts';
 
-export const OfferPage = () => {
+const OfferPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const navigate = useNavigate();
 	const { fetchOfferInfo } = useActions();
@@ -31,3 +31,5 @@ export const OfferPage = () => {
 		</main>
 	);
 };
+
+export default OfferPage;

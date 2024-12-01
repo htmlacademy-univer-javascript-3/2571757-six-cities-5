@@ -8,7 +8,7 @@ import { AuthorizationStatus } from '../../types/auth';
 import { generateRandomCity } from '../../utils/generage-random-city';
 import styles from './styles.module.css';
 
-export const LoginPage = () => {
+const LoginPage = () => {
 	const { changeCity } = useActions();
 	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 	const navigate = useNavigate();
@@ -17,7 +17,7 @@ export const LoginPage = () => {
 
 	useEffect(() => {
 		if (authorizationStatus === AuthorizationStatus.Authorized) {
-			navigate(AppRoutes.Default);
+			navigate(-1);
 		}
 	}, [navigate, authorizationStatus]);
 
@@ -42,3 +42,5 @@ export const LoginPage = () => {
 		</main >
 	);
 };
+
+export default LoginPage;

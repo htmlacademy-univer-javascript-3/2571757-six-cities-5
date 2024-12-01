@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { SortVariant } from '../../types/sort-variants';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { selectSortVariant } from '../../store/selectors';
 import { decodeSortVariant } from './helpers/decodeSortVariant';
-import styles from './styles.module.css';
 import { SORT_VARIANTS } from './constants';
+import styles from './styles.module.css';
 
-export const SortForm = () => {
+export const SortForm = memo(() => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { changeSortVariant } = useActions();
 	const sortVariant = useAppSelector(selectSortVariant);
@@ -72,4 +72,6 @@ export const SortForm = () => {
 			)}
 		</form>
 	);
-};
+});
+
+SortForm.displayName = 'SortForm';

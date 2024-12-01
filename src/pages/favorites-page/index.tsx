@@ -5,7 +5,7 @@ import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
 import { NoFavoritesOffersSlug } from './components/no-favorites-offers-slug/index.tsx';
 
-export const FavoritesPage = () => {
+const FavoritesPage = () => {
 	const { loading, favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
 
 	const offersSplittedByCity = useMemo(() => {
@@ -36,7 +36,7 @@ export const FavoritesPage = () => {
 				<section className="favorites">
 					<h1 className="favorites__title">Saved listing</h1>
 					<ul className="favorites__list">
-						{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, offersForCity]) => (
+						{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, cityOffers]) => (
 							<li className="favorites__locations-items" key={cityName}>
 								<div className="favorites__locations locations locations--current">
 									<div className="locations__item">
@@ -45,7 +45,7 @@ export const FavoritesPage = () => {
 										</a>
 									</div>
 								</div>
-								<OffersList offers={offersForCity} type='favorites' />
+								{cityOffers.length && <OffersList offers={cityOffers} type='favorites' />}
 							</li>
 						))}
 					</ul>
@@ -54,3 +54,5 @@ export const FavoritesPage = () => {
 		</main>
 	);
 };
+
+export default FavoritesPage;

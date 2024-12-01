@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import type { Offer, OfferPreviewType } from '../../types/offer.ts';
 import { OfferCard } from '../offer-card';
+import { calculateClassName } from './utils/index.ts';
 
 type Props = {
 	offers: Offer[];
@@ -7,18 +9,7 @@ type Props = {
 	onOfferHover?: (id?: Offer['id']) => void;
 };
 
-export const OffersList = ({ offers, type = 'default', onOfferHover }: Props) => {
-	const calculateClassName = (listType: OfferPreviewType) => {
-		switch (listType) {
-			case 'favorites':
-				return 'favorites__places';
-			case 'nearest':
-				return 'near-places__list places__list';
-			default:
-				return 'cities__places-list places__list tabs__content';
-		}
-	};
-
+export const OffersList = memo(({ offers, type = 'default', onOfferHover }: Props) => {
 	return (
 		<div className={calculateClassName(type)}>
 			{offers.length && offers.map((offer) => {
@@ -26,4 +17,6 @@ export const OffersList = ({ offers, type = 'default', onOfferHover }: Props) =>
 			})}
 		</div >
 	);
-};
+});
+
+OffersList.displayName = 'OffersList';

@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { MainPage } from '../../pages/main-page';
-import { LoginPage } from '../../pages/login-page';
-import { FavoritesPage } from '../../pages/favorites-page';
-import { OfferPage } from '../../pages/offer-page';
 import { PrivateRoute } from '../../components/private-route';
-import { Page404 } from '../../pages/errors';
 import { AppRoutes } from '../../constants/routes.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
 import { Layout } from '../../components/layout/index.tsx';
 import { selectAuthReducerData } from '../../store/selectors.ts';
 import { AuthorizationStatus } from '../../types/auth.ts';
+import { Spinner } from '../../components/index.ts';
+
+const MainPage = lazy(() => import('../../pages/main-page'));
+const LoginPage = lazy(() => import('../../pages/login-page'));
+const FavoritesPage = lazy(() => import('../../pages/favorites-page'));
+const OfferPage = lazy(() => import('../../pages/offer-page'));
+const Page404 = lazy(() => import('../../pages/404'));
 
 export const Router = () => {
 	const { checkAuthStatus, fetchFavoritesOffers } = useActions();
@@ -29,20 +31,22 @@ export const Router = () => {
 
 	return (
 		<BrowserRouter>
-			<Routes>
-				<Route path={AppRoutes.Default} element={<Layout />}>
-					<Route index element={<MainPage />} />
-					<Route path={AppRoutes.Login} element={<LoginPage />} />
-					<Route path={AppRoutes.Favorites} element={(
-						<PrivateRoute>
-							<FavoritesPage />
-						</PrivateRoute>
-					)}
-					/>
-					<Route path={AppRoutes.OfferForRouter} element={<OfferPage />} />
-				</Route>
-				<Route path='*' element={<Page404 />} />
-			</Routes>
+			<Suspense fallback={<Spinner />}>
+				<Routes>
+					<Route path={AppRoutes.Default} element={<Layout />}>
+						<Route index element={<MainPage />} />
+						<Route path={AppRoutes.Login} element={<LoginPage />} />
+						<Route path={AppRoutes.Favorites} element={(
+							<PrivateRoute>
+								<FavoritesPage />
+							</PrivateRoute>
+						)}
+						/>
+						<Route path={AppRoutes.OfferForRouter} element={<OfferPage />} />
+					</Route>
+					<Route path='*' element={<Page404 />} />
+				</Routes>
+			</Suspense>
 		</BrowserRouter>
 	);
 };
