@@ -3,11 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { Offer } from '../../types/offer';
 import { changeFavoriteStatus, fetchNearestOffers } from '../action';
 import { OfferInfo } from '../../types/offer-info';
+import { ErrorResponse } from '../types';
 
 type OffersState = {
 	nearestOffers: Offer[];
 	loading: boolean;
-	error: string | null;
+	error?: string | null;
 };
 
 const initialState: OffersState = {
@@ -31,9 +32,9 @@ const nearestOffersSlice = createSlice({
 				state.loading = false;
 				state.error = null;
 			})
-			.addCase(fetchNearestOffers.rejected, (state, action) => {
+			.addCase(fetchNearestOffers.rejected, (state, { payload }: PayloadAction<ErrorResponse | undefined>) => {
 				state.loading = false;
-				state.error = action.error.message || 'Something went wrong';
+				state.error = payload?.message;
 			})
 			.addCase(changeFavoriteStatus.fulfilled, (state, action: PayloadAction<OfferInfo>) => {
 				const updatedOffer = action.payload;

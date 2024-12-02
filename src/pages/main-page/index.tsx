@@ -1,27 +1,26 @@
-import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { CityOffers, Spinner } from '../../components';
 import { CitiesList } from '../../components';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { selectAuthReducerData, selectCityName, selectFavoriteOffersReducerData, selectOffersReducerData } from '../../store/selectors.ts';
+import {
+	selectAuthReducerData,
+	selectCityName,
+	selectOffersReducerData
+} from '../../store/selectors.ts';
 import { useSortedOffers } from '../../hooks/use-sorted-offers.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling.ts';
 
 const MainPage = () => {
 	const { fetchOffers } = useActions();
 	const cityName = useAppSelector(selectCityName);
-	const { offers, loading } = useAppSelector(selectOffersReducerData);
-	const { postStatus: { error } } = useAppSelector(selectFavoriteOffersReducerData);
+	const { offers, loading, error } = useAppSelector(selectOffersReducerData);
 	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
+
+	useErrorHandling(error);
 
 	useEffect(() => {
 		fetchOffers();
 	}, [fetchOffers, cityName, authorizationStatus]);
-
-	useEffect(() => {
-		if (error) {
-			toast.error(error);
-		}
-	}, [error]);
 
 	const sortedOffers = useSortedOffers(offers);
 

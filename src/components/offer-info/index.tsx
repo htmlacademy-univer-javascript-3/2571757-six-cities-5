@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
-import toast from 'react-hot-toast';
-import { Spinner, FeedbackBlock } from '../../../../components';
-import { calculateRatingWidth } from '../../../../utils/calculate-rating-width';
-import { capitalize } from '../../../../utils/capitalize';
-import { OfferInfo as OfferInfoType } from '../../../../types/offer-info';
-import { pluralize } from '../../helpers';
-import { OfferRequestStatus } from '../../../../types/offer';
-import { useActions, useAppSelector } from '../../../../store/hooks';
-import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../../../store/selectors';
-import { AuthorizationStatus } from '../../../../types/auth';
 import { useNavigate } from 'react-router-dom';
-import { AppRoutes } from '../../../../constants/routes';
+import { Spinner } from '../spinner';
+import { FeedbackBlock } from '../feedback-block';
+import { calculateRatingWidth } from '../../utils/calculate-rating-width';
+import { capitalize } from '../../utils/capitalize';
+import { pluralize } from '../../utils/pluralize';
+import type { OfferInfo as OfferInfoType } from '../../types/offer-info';
+import { OfferRequestStatus } from '../../types/offer';
+import { useActions, useAppSelector } from '../../store/hooks';
+import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
+import { AuthorizationStatus } from '../../types/auth';
+import { AppRoutes } from '../../constants/routes';
+import { useErrorHandling } from '../../hooks/use-error-handling';
 
 const MAX_PREVIEW_IMAGES_AMOUNT = 6;
 
@@ -19,21 +19,20 @@ type Props = {
 	offerInfo?: OfferInfoType;
 }
 
-
 export const OfferInfo = ({ offerInfo, loading }: Props) => {
 	const navigate = useNavigate();
 	const { changeFavoriteStatus } = useActions();
 	const { postStatus: { loading: changeFavoriteStatusLoading, error } } = useAppSelector(selectFavoriteOffersReducerData);
 	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
-	useEffect(() => {
-		if (error) {
-			toast.error(error);
-		}
-	}, [error]);
+	useErrorHandling(error);
 
-	if (!offerInfo || loading) {
+	if (loading) {
 		return <Spinner size='l' />;
+	}
+
+	if (!offerInfo) {
+		return <h1>Offer data not found</h1>;
 	}
 
 	const handleFavoriteButtonClick = () => {

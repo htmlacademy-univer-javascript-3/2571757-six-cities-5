@@ -1,9 +1,9 @@
-import { useReducer, useCallback, Fragment, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { useReducer, useCallback, Fragment } from 'react';
 import { getRatingTitle } from './utils';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { CommentFormState } from '../../types/comment';
 import { selectCommentsReducerData } from '../../store/selectors';
+import { useErrorHandling } from '../../hooks/use-error-handling';
 
 const MIN_COMMENT_MESSAGE_LENGTH = 50;
 const MAX_COMMENT_MESSAGE_LENGTH = 300;
@@ -40,11 +40,7 @@ export const CommentForm = ({ offerId }: Props) => {
 	const [formData, dispatch] = useReducer(formReducer, initialFormData);
 	const { postStatus: { loading, error } } = useAppSelector(selectCommentsReducerData);
 
-	useEffect(() => {
-		if (error) {
-			toast.error(error);
-		}
-	}, [error]);
+	useErrorHandling(error);
 
 	const handleFieldChange = useCallback((evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = evt.target;

@@ -28,6 +28,7 @@ const favoriteOffersSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
+			// fetchFavoritesOffers
 			.addCase(fetchFavoritesOffers.pending, (state) => {
 				state.fetchStatus.loading = true;
 				state.fetchStatus.error = null;
@@ -37,10 +38,12 @@ const favoriteOffersSlice = createSlice({
 				state.fetchStatus.loading = false;
 				state.fetchStatus.error = null;
 			})
-			.addCase(fetchFavoritesOffers.rejected, (state, action) => {
+			.addCase(fetchFavoritesOffers.rejected, (state, { payload }: PayloadAction<ErrorResponse | undefined>) => {
 				state.fetchStatus.loading = false;
-				state.fetchStatus.error = action.error.message || 'Something went wrong';
+				state.fetchStatus.error = payload?.message;
 			})
+
+			// changeFavoriteStatus
 			.addCase(changeFavoriteStatus.pending, (state) => {
 				state.postStatus.loading = true;
 				state.postStatus.error = null;
@@ -60,7 +63,7 @@ const favoriteOffersSlice = createSlice({
 			})
 			.addCase(changeFavoriteStatus.rejected, (state, { payload }: PayloadAction<ErrorResponse | undefined>) => {
 				state.postStatus.loading = false;
-				state.postStatus.error = payload?.message || 'Something went wrong';
+				state.postStatus.error = payload?.message;
 			});
 	}
 });

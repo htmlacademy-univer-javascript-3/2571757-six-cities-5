@@ -3,6 +3,7 @@ import { AppRoutes } from '../../constants/routes';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
 import { AuthorizationStatus } from '../../types/auth';
+import { useErrorHandling } from '../../hooks/use-error-handling';
 import styles from './styles.module.css';
 
 type Props = {
@@ -10,13 +11,15 @@ type Props = {
 };
 
 export const Header = ({ withNav = true }: Props) => {
-	const { authorizationStatus, userData } = useAppSelector(selectAuthReducerData);
+	const { authorizationStatus, userData, logoutStatus: { error } } = useAppSelector(selectAuthReducerData);
 	const { favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
 	const { logout } = useActions();
 
 	const handleLogoutButtonClick = () => {
 		logout();
 	};
+
+	useErrorHandling(error);
 
 	return (
 		<header className="header">

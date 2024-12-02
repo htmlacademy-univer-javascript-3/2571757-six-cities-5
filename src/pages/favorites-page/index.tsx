@@ -1,16 +1,15 @@
-import { useEffect, useMemo } from 'react';
-import toast from 'react-hot-toast';
+import { useMemo } from 'react';
 import { Offer } from '../../types/offer.ts';
 import { OffersList, Spinner } from '../../components';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
-import { NoFavoritesOffersSlug } from './components/no-favorites-offers-slug/index.tsx';
+import { NoFavoritesOffersSlug } from '../../components/no-favorites-offers-slug/index.tsx';
+import { useErrorHandling } from '../../hooks/use-error-handling.ts';
 import styles from './styles.module.css';
 
 const FavoritesPage = () => {
 	const {
-		fetchStatus: { loading },
-		postStatus: { error },
+		fetchStatus: { loading, error: fetchOffersError },
 		favoritesOffers
 	} = useAppSelector(selectFavoriteOffersReducerData);
 
@@ -24,11 +23,7 @@ const FavoritesPage = () => {
 		}, {} as Record<Offer['city']['name'], Offer[]>);
 	}, [favoritesOffers]);
 
-	useEffect(() => {
-		if (error) {
-			toast.error(error);
-		}
-	}, [error]);
+	useErrorHandling(fetchOffersError);
 
 	if (loading) {
 		return (

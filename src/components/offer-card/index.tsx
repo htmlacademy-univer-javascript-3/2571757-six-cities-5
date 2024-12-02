@@ -7,11 +7,12 @@ import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../st
 import { AuthorizationStatus } from '../../types/auth.ts';
 
 type Props = {
+	offer: Offer;
 	previewType: OfferPreviewType;
 	onHover?: (id: Offer['id'] | undefined) => void;
-} & Offer;
+};
 
-export const OfferCard = (props: Props) => {
+export const OfferCard = ({ offer, previewType, onHover }: Props) => {
 	const {
 		id,
 		price,
@@ -19,36 +20,24 @@ export const OfferCard = (props: Props) => {
 		previewImage,
 		type,
 		rating,
-		previewType,
 		isPremium,
-		isFavorite,
-		onHover
-	} = props;
+		isFavorite
+	} = offer;
+
 	const navigate = useNavigate();
-	const isDefaultOfferType = previewType === 'default';
-	const isNearestOfferType = previewType === 'nearest';
-	const isFavoriteOfferType = previewType === 'favorites';
 	const { changeFavoriteStatus } = useActions();
 	const { postStatus: { loading } } = useAppSelector(selectFavoriteOffersReducerData);
 	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
-	const calculateClassName = (listType: OfferPreviewType) => {
-		switch (listType) {
-			case 'favorites':
-				return 'favorites';
-			case 'nearest':
-				return 'near-places';
-			default:
-				return 'cities';
-		}
-	};
+	const isFavoriteOfferType = previewType === 'favorites';
 
-	const handleMouseEnter = () => {
-		onHover?.(id);
-	};
-
-	const handleMouseLeave = () => {
-		onHover?.(undefined);
+	const calculateClassName = () => {
+		const classMap = {
+			favorites: 'favorites',
+			nearest: 'near-places',
+			default: 'cities'
+		};
+		return classMap[previewType] || classMap.default;
 	};
 
 	const handleFavoriteButtonClick = () => {
@@ -57,24 +46,25 @@ export const OfferCard = (props: Props) => {
 			return;
 		}
 
-		const requestStatus = isFavorite ? OfferRequestStatus.Remove : OfferRequestStatus.Add;
-
-		changeFavoriteStatus({ offerId: id, status: requestStatus });
+		changeFavoriteStatus({ offerId: id, status: isFavorite ? OfferRequestStatus.Remove : OfferRequestStatus.Add });
 	};
 
 	return (
-		<article className={`${calculateClassName(previewType)}__card place-card`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-			{isDefaultOfferType && (
-				<div className={`${calculateClassName(previewType)}__mark`}>
-					{isPremium && (
-						<div className="place-card__mark">
-							<span>Premium</span>
-						</div>
-					)}
+		<article className={`${calculateClassName()}__card place-card`}
+			onMouseEnter={() => onHover?.(id)}
+			onMouseLeave={() => onHover?.(undefined)}
+		>
+
+			{previewType === 'default' && isPremium && (
+				<div className={`${calculateClassName()}__mark`}>
+					<div className="place-card__mark">
+						<span>Premium</span>
+					</div>
 				</div>
 			)}
-			<div className={`${calculateClassName(previewType)}__image-wrapper place-card__image-wrapper`}>
-				<Link to={`${AppRoutes.Offer}/${id}`} replace={isNearestOfferType}>
+
+			<div className={`${calculateClassName()}__image-wrapper place-card__image-wrapper`}>
+				<Link to={`${AppRoutes.Offer}/${id}`} replace={previewType === 'nearest'}>
 					<img
 						className="place-card__image"
 						src={previewImage}
@@ -84,6 +74,7 @@ export const OfferCard = (props: Props) => {
 					/>
 				</Link>
 			</div>
+
 			<div className="place-card__info">
 				<div className="place-card__price-wrapper">
 					<div className="place-card__price">
@@ -92,7 +83,7 @@ export const OfferCard = (props: Props) => {
 					</div>
 					<button
 						disabled={loading}
-						className={`place-card__bookmark-button button ${isFavorite && 'place-card__bookmark-button--active'}`}
+						className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
 						type="button"
 						onClick={handleFavoriteButtonClick}
 					>
@@ -109,7 +100,7 @@ export const OfferCard = (props: Props) => {
 					</div>
 				</div>
 				<h2 className="place-card__name">
-					<Link to={`${AppRoutes.Offer}/${id}`} replace={isNearestOfferType}>{title}</Link>
+					<Link to={`${AppRoutes.Offer}/${id}`} replace={previewType === 'nearest'}>{title}</Link>
 				</h2>
 				<p className="place-card__type">{type}</p>
 			</div>

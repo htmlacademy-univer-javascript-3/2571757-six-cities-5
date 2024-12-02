@@ -14,7 +14,7 @@ import { sortCommentsByDate } from '../utils/sort-by-date';
 import { handleApiError } from './utils/handle-api-error';
 import api from '../api';
 
-export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<unknown>>(
+export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<ErrorResponse>>(
 	Actions.CHECK_AUTH_STATUS,
 	async (_, { rejectWithValue }) => {
 		try {
@@ -23,7 +23,7 @@ export const checkAuthStatus = createAsyncThunk<UserData, void, ThunkConfig<unkn
 
 			return response.data;
 		} catch (error) {
-			return rejectWithValue(error);
+			return rejectWithValue(handleApiError(error));
 		}
 	}
 );
@@ -42,7 +42,7 @@ export const authorize = createAsyncThunk<UserData, AuthorizationRequestDto, Thu
 	}
 );
 
-export const logout = createAsyncThunk<void, void, ThunkConfig<unknown>>(
+export const logout = createAsyncThunk<void, void, ThunkConfig<ErrorResponse>>(
 	Actions.LOGOUT,
 	async (_, { rejectWithValue }) => {
 		try {
