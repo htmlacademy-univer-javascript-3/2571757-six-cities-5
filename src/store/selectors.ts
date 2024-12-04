@@ -1,4 +1,3 @@
-import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from './types';
 
 const selectState = (state: RootState) => state;
@@ -11,5 +10,5 @@ export const selectFavoriteOffersReducerData = (state: RootState) => selectState
 export const selectAuthReducerData = (state: RootState) => selectState(state).auth;
 export const selectCommentsReducerData = (state: RootState) => selectState(state).comments;
 
-export const selectCityName = createSelector(selectCommonState, (state) => state.city);
-export const selectSortVariant = createSelector(selectCommonState, (state) => state.sortVariant);
+export const selectCityName = (state: RootState) => selectCommonState(state).city;
+export const selectSortVariant = (state: RootState) => selectCommonState(state).sortVariant;
