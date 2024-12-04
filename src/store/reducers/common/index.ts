@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Cities } from '../../types/cities';
-import { SortVariant } from '../../types/sort-variants';
+import { Cities } from '../../../types/cities';
+import { SortVariant } from '../../../types/sort-variants';
 
 type CommonState = {
 	city: Cities;

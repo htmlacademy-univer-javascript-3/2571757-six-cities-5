@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { changeFavoriteStatus, fetchOfferInfo } from '../action';
-import { OfferInfo } from '../../types/offer-info';
-import { ErrorResponse } from '../types';
+import { changeFavoriteStatus, fetchOfferInfo } from '../../action';
+import { OfferInfo } from '../../../types/offer-info';
+import { ErrorResponse } from '../../types';
 
-type OfferInfoState = {
+export type OfferInfoState = {
 	offerInfo?: OfferInfo;
 	loading: boolean;
 	error?: string | null;
 };
 
-const initialState: OfferInfoState = {
+export const initialState: OfferInfoState = {
 	offerInfo: undefined,
 	loading: false,
 	error: null

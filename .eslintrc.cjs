@@ -14,7 +14,7 @@ module.exports = {
 	plugins: ['react-refresh'],
 	rules: {
 		'react-refresh/only-export-components': 'warn',
-	  	'indent': ['error', 'tab', {"SwitchCase": 1}],
+		'indent': ['error', 'tab', { "SwitchCase": 1 }],
 		'arrow-body-style': 'off',
 		'object-curly-spacing': ['error', 'always'],
 		'comma-dangle': ['error', 'never'],
@@ -22,11 +22,11 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: [ '*test*' ],
+			files: ['*test*'],
 			rules: { '@typescript-eslint/unbound-method': 'off' }
 		},
 		{
-			files: [ '**.json' ],
+			files: ['**.json'],
 			rules: { 'indent': ['error', 'tab'] }
 		},
 	],

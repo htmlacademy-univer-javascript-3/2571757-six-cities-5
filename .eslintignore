@@ -4,3 +4,4 @@ tsconfig.json
 tsconfig.node.json
 node_modules
 dist
+*.config.ts

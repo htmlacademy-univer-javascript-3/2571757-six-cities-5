@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { OfferRequestStatus, type Offer } from '../../types/offer';
-import type { ErrorResponse, RequestStatus } from '../types';
-import type { OfferInfo } from '../../types/offer-info';
-import { changeFavoriteStatus, fetchFavoritesOffers } from '../action';
-import { convertOfferInfoToOffer } from '../../utils/convert-offer-info-into-offer';
+import { OfferRequestStatus, type Offer } from '../../../types/offer';
+import type { ErrorResponse, RequestStatus } from '../../types';
+import type { OfferInfo } from '../../../types/offer-info';
+import { changeFavoriteStatus, fetchFavoritesOffers } from '../../action';
+import { convertOfferInfoToOffer } from '../../../utils/convert-offer-info-into-offer';
 
-type FavoritesOffersState = {
+export type FavoritesOffersState = {
 	favoritesOffers: Offer[];
 	fetchStatus: RequestStatus;
 	postStatus: RequestStatus;
 };
 
-const initialState: FavoritesOffersState = {
+export const initialState: FavoritesOffersState = {
 	favoritesOffers: [],
 	fetchStatus: {
 		loading: false

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchOfferComments, postOfferComment } from '../action';
-import type { Comment } from '../../types/comment';
-import { ErrorResponse, RequestStatus } from '../types';
+import { fetchOfferComments, postOfferComment } from '../../action';
+import type { Comment } from '../../../types/comment';
+import { ErrorResponse, RequestStatus } from '../../types';
 
 type CommentsState = {
     comments: Comment[];
@@ -9,7 +9,7 @@ type CommentsState = {
     postStatus: RequestStatus;
 };
 
-const initialState: CommentsState = {
+export const initialState: CommentsState = {
 	comments: [],
 	fetchStatus: {
 		loading: false,

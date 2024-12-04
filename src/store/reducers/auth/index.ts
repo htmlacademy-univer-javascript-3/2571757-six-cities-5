@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authorize, checkAuthStatus, logout } from '../action';
-import { UserData } from '../../types/user';
-import { AuthorizationStatus } from '../../types/auth';
-import { ErrorResponse, RequestStatus } from '../types';
+import { authorize, checkAuthStatus, logout } from '../../action';
+import { UserData } from '../../../types/user';
+import { AuthorizationStatus } from '../../../types/auth';
+import { ErrorResponse, RequestStatus } from '../../types';
 
 type AuthState = {
     authorizationStatus: AuthorizationStatus;
@@ -12,7 +12,7 @@ type AuthState = {
     userData: Partial<UserData> | null;
 }
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
 	authorizationStatus: AuthorizationStatus.Unauthorized,
 	userData: null,
 	checkAuthStatus: {

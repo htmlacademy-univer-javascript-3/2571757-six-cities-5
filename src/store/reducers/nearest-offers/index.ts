@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Offer } from '../../types/offer';
-import { changeFavoriteStatus, fetchNearestOffers } from '../action';
-import { OfferInfo } from '../../types/offer-info';
-import { ErrorResponse } from '../types';
+import { Offer } from '../../../types/offer';
+import { changeFavoriteStatus, fetchNearestOffers } from '../../action';
+import { OfferInfo } from '../../../types/offer-info';
+import { ErrorResponse } from '../../types';
 
-type OffersState = {
+export type OffersState = {
 	nearestOffers: Offer[];
 	loading: boolean;
 	error?: string | null;
 };
 
-const initialState: OffersState = {
+export const initialState: OffersState = {
 	nearestOffers: [],
 	loading: false,
 	error: null
