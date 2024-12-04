@@ -10,7 +10,7 @@ type Props = {
 
 export const Spinner = ({ size = 'm', type = 'block', preset = 'black' }: Props) => {
 	const spinner = (
-		<div className={styles.ring} style={{ ...mapSizeIntoRingStyles[size], color: preset }}>
+		<div role='presentation' className={styles.ring} style={{ ...mapSizeIntoRingStyles[size], color: preset }}>
 			<div style={{ ...mapSizeIntoRingDivStyles[size] }}></div>
 			<div style={{ ...mapSizeIntoRingDivStyles[size] }}></div>
 			<div style={{ ...mapSizeIntoRingDivStyles[size] }}></div>

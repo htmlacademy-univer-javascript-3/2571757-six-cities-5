@@ -2,6 +2,7 @@ import { commentsReducer, initialState } from './index';
 import { fetchOfferComments, postOfferComment } from '../../action';
 import type { Comment } from '../../../types/comment';
 import { ErrorResponse } from '../../types';
+import { mockComment } from '../../../mocks/comments';
 
 describe('commentsReducer', () => {
 	describe('initial state', () => {
@@ -32,26 +33,12 @@ describe('commentsReducer', () => {
 		it('should handle fetchOfferComments.fulfilled', () => {
 			const comments: Comment[] = [
 				{
-					id: '1',
-					date: '2023-10-01T12:00:00Z',
-					user: {
-						name: 'Author 1',
-						avatarUrl: 'http://example.com/avatar1.jpg',
-						isPro: true
-					},
-					comment: 'Comment 1',
-					rating: 4
+					...mockComment,
+					id: '1'
 				},
 				{
-					id: '2',
-					date: '2023-10-02T12:00:00Z',
-					user: {
-						name: 'Author 2',
-						avatarUrl: 'http://example.com/avatar2.jpg',
-						isPro: false
-					},
-					comment: 'Comment 2',
-					rating: 5
+					...mockComment,
+					id: '2'
 				}
 			];
 			const action = { type: fetchOfferComments.fulfilled.type, payload: comments };
@@ -100,17 +87,7 @@ describe('commentsReducer', () => {
 		});
 
 		it('should handle postOfferComment.fulfilled', () => {
-			const newComment: Comment = {
-				id: '3',
-				date: '2023-10-03T12:00:00Z',
-				user: {
-					name: 'New Author',
-					avatarUrl: 'http://example.com/newavatar.jpg',
-					isPro: true
-				},
-				comment: 'New Comment',
-				rating: 3
-			};
+			const newComment: Comment = mockComment;
 			const action = { type: postOfferComment.fulfilled.type, payload: newComment };
 
 			const result = commentsReducer(initialState, action);
