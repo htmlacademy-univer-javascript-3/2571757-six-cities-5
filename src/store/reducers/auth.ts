@@ -70,7 +70,7 @@ const authSlice = createSlice({
 				const validationErrors = payload?.details ? setValidationErrors(payload?.details) : undefined;
 
 				state.authorizeStatus.validationErrors = validationErrors;
-				state.authorizeStatus.error = Object.values(validationErrors || {}).join(', ');
+				state.authorizeStatus.error = payload?.message;
 			})
 
 			// logout
@@ -81,8 +81,9 @@ const authSlice = createSlice({
 				state.authorizationStatus = AuthorizationStatus.Unauthorized;
 				state.logoutStatus.loading = false;
 			})
-			.addCase(logout.rejected, (state) => {
+			.addCase(logout.rejected, (state, { payload }: PayloadAction<ErrorResponse | undefined>) => {
 				state.logoutStatus.loading = false;
+				state.logoutStatus.error = payload?.message;
 			});
 	}
 });

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 
-export const Page404 = () => {
+const Page404 = () => {
 	const navigate = useNavigate();
 
 	const handleButtonClick = () => {
@@ -16,3 +16,5 @@ export const Page404 = () => {
 		</div>
 	);
 };
+
+export default Page404;

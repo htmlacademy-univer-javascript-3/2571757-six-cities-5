@@ -14,3 +14,5 @@ export { Footer } from './footer';
 export { SignInForm } from './singin-form';
 export { FeedbackBlock } from './feedback-block';
 export { Layout } from './layout';
+export { NearestOffers } from './nearest-offers';
+export { OfferInfo } from './offer-info';

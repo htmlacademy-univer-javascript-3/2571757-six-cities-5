@@ -3,10 +3,15 @@ import { Offer } from '../../types/offer.ts';
 import { OffersList, Spinner } from '../../components';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
-import { NoFavoritesOffersSlug } from './components/no-favorites-offers-slug/index.tsx';
+import { NoFavoritesOffersSlug } from '../../components/no-favorites-offers-slug/index.tsx';
+import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import styles from './styles.module.css';
 
-export const FavoritesPage = () => {
-	const { loading, favoritesOffers } = useAppSelector(selectFavoriteOffersReducerData);
+const FavoritesPage = () => {
+	const {
+		fetchStatus: { loading, error: fetchOffersError },
+		favoritesOffers
+	} = useAppSelector(selectFavoriteOffersReducerData);
 
 	const offersSplittedByCity = useMemo(() => {
 		return favoritesOffers.reduce((acc, currOffer) => {
@@ -17,6 +22,8 @@ export const FavoritesPage = () => {
 			return acc;
 		}, {} as Record<Offer['city']['name'], Offer[]>);
 	}, [favoritesOffers]);
+
+	useErrorHandling(fetchOffersError);
 
 	if (loading) {
 		return (
@@ -31,12 +38,12 @@ export const FavoritesPage = () => {
 	}
 
 	return (
-		<main className="page__main page__main--favorites">
+		<main className={`page__main page__main--favorites ${styles.page}`}>
 			<div className="page__favorites-container container">
 				<section className="favorites">
 					<h1 className="favorites__title">Saved listing</h1>
 					<ul className="favorites__list">
-						{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, offersForCity]) => (
+						{Object.keys(offersSplittedByCity).length && Object.entries(offersSplittedByCity).map(([cityName, cityOffers]) => (
 							<li className="favorites__locations-items" key={cityName}>
 								<div className="favorites__locations locations locations--current">
 									<div className="locations__item">
@@ -45,7 +52,7 @@ export const FavoritesPage = () => {
 										</a>
 									</div>
 								</div>
-								<OffersList offers={offersForCity} type='favorites' />
+								{cityOffers.length && <OffersList offers={cityOffers} type='favorites' />}
 							</li>
 						))}
 					</ul>
@@ -54,3 +61,5 @@ export const FavoritesPage = () => {
 		</main>
 	);
 };
+
+export default FavoritesPage;

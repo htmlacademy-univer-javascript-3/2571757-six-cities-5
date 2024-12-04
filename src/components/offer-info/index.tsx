@@ -1,8 +1,16 @@
-import { Spinner, FeedbackBlock } from '../../../../components';
-import { calculateRatingWidth } from '../../../../utils/calculate-rating-width';
-import { capitalize } from '../../../../utils/capitalize';
-import { OfferInfo as OfferInfoType } from '../../../../types/offer-info';
-import { pluralize } from '../../helpers';
+import { useNavigate } from 'react-router-dom';
+import { Spinner } from '../spinner';
+import { FeedbackBlock } from '../feedback-block';
+import { calculateRatingWidth } from '../../utils/calculate-rating-width';
+import { capitalize } from '../../utils/capitalize';
+import { pluralize } from '../../utils/pluralize';
+import type { OfferInfo as OfferInfoType } from '../../types/offer-info';
+import { OfferRequestStatus } from '../../types/offer';
+import { useActions, useAppSelector } from '../../store/hooks';
+import { selectAuthReducerData, selectFavoriteOffersReducerData } from '../../store/selectors';
+import { AuthorizationStatus } from '../../types/auth';
+import { AppRoutes } from '../../constants/routes';
+import { useErrorHandling } from '../../hooks/use-error-handling';
 
 const MAX_PREVIEW_IMAGES_AMOUNT = 6;
 
@@ -11,11 +19,32 @@ type Props = {
 	offerInfo?: OfferInfoType;
 }
 
-
 export const OfferInfo = ({ offerInfo, loading }: Props) => {
-	if (!offerInfo || loading) {
+	const navigate = useNavigate();
+	const { changeFavoriteStatus } = useActions();
+	const { postStatus: { loading: changeFavoriteStatusLoading, error } } = useAppSelector(selectFavoriteOffersReducerData);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
+
+	useErrorHandling(error);
+
+	if (loading) {
 		return <Spinner size='l' />;
 	}
+
+	if (!offerInfo) {
+		return <h1>Offer data not found</h1>;
+	}
+
+	const handleFavoriteButtonClick = () => {
+		if (authorizationStatus === AuthorizationStatus.Unauthorized) {
+			navigate(AppRoutes.Login);
+			return;
+		}
+
+		const requestStatus = offerInfo.isFavorite ? OfferRequestStatus.Remove : OfferRequestStatus.Add;
+
+		changeFavoriteStatus({ offerId: offerInfo.id, status: requestStatus });
+	};
 
 	return (
 		<section className="offer">
@@ -39,7 +68,12 @@ export const OfferInfo = ({ offerInfo, loading }: Props) => {
 						<h1 className="offer__name">
 							{offerInfo.title}
 						</h1>
-						<button className="offer__bookmark-button button" type="button">
+						<button
+							className={`offer__bookmark-button button ${offerInfo.isFavorite && 'offer__bookmark-button--active'}`}
+							type="button"
+							disabled={changeFavoriteStatusLoading}
+							onClick={handleFavoriteButtonClick}
+						>
 							<svg className="offer__bookmark-icon" width="31" height="33">
 								<use xlinkHref="#icon-bookmark"></use>
 							</svg>

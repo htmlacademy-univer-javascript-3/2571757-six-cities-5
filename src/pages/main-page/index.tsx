@@ -1,26 +1,33 @@
 import { useEffect } from 'react';
 import { CityOffers, Spinner } from '../../components';
 import { CitiesList } from '../../components';
-import { CITIES } from '../../constants/cities.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { selectCityName, selectOffersReducerData } from '../../store/selectors.ts';
+import {
+	selectAuthReducerData,
+	selectCityName,
+	selectOffersReducerData
+} from '../../store/selectors.ts';
 import { useSortedOffers } from '../../hooks/use-sorted-offers.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling.ts';
 
-export const MainPage = () => {
-	const { offers, loading } = useAppSelector(selectOffersReducerData);
+const MainPage = () => {
 	const { fetchOffers } = useActions();
 	const cityName = useAppSelector(selectCityName);
+	const { offers, loading, error } = useAppSelector(selectOffersReducerData);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
+
+	useErrorHandling(error);
 
 	useEffect(() => {
 		fetchOffers();
-	}, [fetchOffers, cityName]);
+	}, [fetchOffers, cityName, authorizationStatus]);
 
 	const sortedOffers = useSortedOffers(offers);
 
 	return (
 		<main className="page__main page__main--index">
 			<h1 className="visually-hidden">Cities</h1>
-			<CitiesList citiesNames={CITIES} />
+			<CitiesList />
 			{loading ? (
 				<Spinner size='l' />
 			) : (
@@ -30,3 +37,4 @@ export const MainPage = () => {
 	);
 };
 
+export default MainPage;

@@ -19,6 +19,8 @@ export function handleApiError(error: unknown): ErrorResponse {
 				return { errorType: data?.errorType, message: data?.message || 'Unauthorized access' };
 			case 404:
 				return { errorType: data?.errorType, message: data?.message || 'Offer not found' };
+			case 409:
+				return { errorType: data?.errorType, message: data?.message || 'Status has already been changed' };
 			default:
 				return { errorType: 'UNKNOWN_ERROR', message: 'An unknown error occurred' };
 		}

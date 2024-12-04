@@ -1,5 +1,5 @@
 import { Comment } from '../../types/comment';
-import { convertDate } from '../../utils';
+import { convertDate } from '../../utils/convert-date';
 import { calculateRatingWidth } from '../../utils/calculate-rating-width';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { Offer } from '../../types/offer';
 import { OffersList } from '../offers-list';
 import { Map } from '../map';
@@ -17,30 +17,30 @@ export const CityOffers = ({ offers }: Props) => {
 	const offersAmount = offers.length;
 	const isOffersListEmpty = offersAmount === 0;
 
-	const handleOfferHover = (id: Offer['id'] | undefined) => {
+	const handleOfferHover = useCallback((id: Offer['id'] | undefined) => {
 		setHoveredOfferId(id);
-	};
+	}, []);
 
-	const hoveredOffer = useMemo(() => {
-		return offers.find((offer) => offer.id === hoveredOfferId);
-	}, [hoveredOfferId, offers]);
+	const hoveredOffer = useMemo(() => offers.find((offer) => offer.id === hoveredOfferId), [offers, hoveredOfferId]);
+
+	if (isOffersListEmpty) {
+		return (
+			<NoOffersSlug />
+		);
+	}
 
 	return (
 		<div className="cities">
 			<div className={`cities__places-container container ${isOffersListEmpty && 'cities__places-container--empty'}`}>
-				{isOffersListEmpty ? (
-					<NoOffersSlug />
-				) : (
-					<section className="cities__places places">
-						<h2 className="visually-hidden">Places</h2>
-						<b className="places__found">{offersAmount} places to stay in {cityName}</b>
-						<SortForm />
-						<OffersList offers={offers} onOfferHover={handleOfferHover} type='default' />
-					</section>
-				)}
+				<section className="cities__places places">
+					<h2 className="visually-hidden">Places</h2>
+					<b className="places__found">{offersAmount} places to stay in {cityName}</b>
+					<SortForm />
+					{offers.length && <OffersList offers={offers} type='default' onOfferHover={handleOfferHover} />}
+				</section>
 				<div className="cities__right-section">
 					<section className="cities__map">
-						<Map offers={offers} activeCityName={cityName} selectedOffer={hoveredOffer} />
+						{offers.length && <Map offers={offers} activeCityName={cityName} selectedOffer={hoveredOffer} />}
 					</section>
 				</div>
 			</div>

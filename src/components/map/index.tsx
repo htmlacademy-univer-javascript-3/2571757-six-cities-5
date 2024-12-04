@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { Marker, layerGroup, LatLngBounds, LatLngBoundsLiteral } from 'leaflet';
 import { useMap } from '../../hooks/use-map';
 import type { Offer } from '../../types/offer';
@@ -26,15 +26,15 @@ export const Map = ({
 	offers,
 	activeCityName,
 	selectedOffer
-}: Props): JSX.Element => {
+}: Props) => {
 	const mapRef = useRef(null);
 	const markerLayerRef = useRef(layerGroup());
 	const markersRef = useRef<MarkerRef[]>([]);
 
-	const cityData = offers.find((offer) => offer.city.name === activeCityName)?.city;
-	const points = offers
+	const cityData = useMemo(() => offers.find((offer) => offer.city.name === activeCityName)?.city, [offers, activeCityName]);
+	const points = useMemo(() => offers
 		.filter((offer) => offer.city.name === activeCityName)
-		.map((offer) => ({ id: offer.id, title: offer.title, ...offer.location }));
+		.map((offer) => ({ id: offer.id, title: offer.title, ...offer.location })), [offers, activeCityName]);
 
 	const map = useMap(mapRef, cityData);
 

@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { NearestOffers } from './components/nearest-offers/index.tsx';
-import { OfferInfo } from './components/offer-info/index.tsx';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
-import { selectOfferInfoReducerData } from '../../store/selectors.ts';
+import { selectAuthReducerData, selectOfferInfoReducerData } from '../../store/selectors.ts';
 import { AppRoutes } from '../../constants/routes.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import { NearestOffers, OfferInfo } from '../../components';
 
-export const OfferPage = () => {
+const OfferPage = () => {
 	const { id } = useParams<{ id: string }>();
 	const navigate = useNavigate();
 	const { fetchOfferInfo } = useActions();
 	const { offerInfo, loading, error } = useAppSelector(selectOfferInfoReducerData);
+	const { authorizationStatus } = useAppSelector(selectAuthReducerData);
 
 	useEffect(() => {
 		if (!id) {
@@ -18,11 +19,11 @@ export const OfferPage = () => {
 		}
 
 		fetchOfferInfo({ offerId: id });
-	}, [fetchOfferInfo, id]);
+	}, [fetchOfferInfo, id, authorizationStatus]);
 
-	if (error) {
-		navigate(AppRoutes.NotFound);
-	}
+	const handleNotFoundPageNavigate = () => navigate(AppRoutes.NotFound);
+
+	useErrorHandling(error, handleNotFoundPageNavigate);
 
 	return (
 		<main className="page__main page__main--offer">
@@ -31,3 +32,5 @@ export const OfferPage = () => {
 		</main>
 	);
 };
+
+export default OfferPage;
