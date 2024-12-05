@@ -1,5 +1,5 @@
 import { commentsReducer, initialState } from './index';
-import { fetchOfferComments, postOfferComment } from '../../action';
+import { fetchOfferComments, postOfferComment } from '../../actions';
 import type { Comment } from '../../../types/comment';
 import { ErrorResponse } from '../../types';
 import { mockComment } from '../../../mocks/comments';

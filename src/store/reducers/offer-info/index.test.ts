@@ -1,5 +1,5 @@
 import { offerInfoReducer, initialState, OfferInfoState } from './index';
-import { fetchOfferInfo, changeFavoriteStatus } from '../../action';
+import { fetchOfferInfo, changeFavoriteStatus } from '../../actions';
 import { OfferInfo } from '../../../types/offer-info';
 import { ErrorResponse } from '../../types';
 import { mockOfferInfo } from '../../../mocks/offers';

@@ -1,5 +1,5 @@
 import { nearestOffersReducer, initialState } from './index';
-import { fetchNearestOffers, changeFavoriteStatus } from '../../action';
+import { fetchNearestOffers, changeFavoriteStatus } from '../../actions';
 import { Offer } from '../../../types/offer';
 import { ErrorResponse } from '../../types';
 import { OfferInfo } from '../../../types/offer-info';

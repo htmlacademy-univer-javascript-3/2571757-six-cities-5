@@ -1,5 +1,5 @@
 import { offersReducer } from './index';
-import { fetchOffers, changeFavoriteStatus } from '../../action';
+import { fetchOffers, changeFavoriteStatus } from '../../actions';
 import { Offer } from '../../../types/offer';
 import { ErrorResponse } from '../../types';
 import { OfferInfo } from '../../../types/offer-info';

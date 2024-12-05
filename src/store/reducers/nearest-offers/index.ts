@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Offer } from '../../../types/offer';
-import { changeFavoriteStatus, fetchNearestOffers } from '../../action';
+import { changeFavoriteStatus, fetchNearestOffers } from '../../actions';
 import { OfferInfo } from '../../../types/offer-info';
 import { ErrorResponse } from '../../types';
 

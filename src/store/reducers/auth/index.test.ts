@@ -1,5 +1,5 @@
 import { authReducer, initialState } from './index';
-import { authorize, checkAuthStatus, logout } from '../../action';
+import { authorize, checkAuthStatus, logout } from '../../actions';
 import { AuthorizationStatus } from '../../../types/auth';
 import { UserData } from '../../../types/user';
 import { ErrorResponse } from '../../types';

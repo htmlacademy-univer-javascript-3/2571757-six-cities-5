@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { OfferRequestStatus, type Offer } from '../../../types/offer';
 import type { ErrorResponse, RequestStatus } from '../../types';
 import type { OfferInfo } from '../../../types/offer-info';
-import { changeFavoriteStatus, fetchFavoritesOffers } from '../../action';
+import { changeFavoriteStatus, fetchFavoritesOffers } from '../../actions';
 import { convertOfferInfoToOffer } from '../../../utils/convert-offer-info-into-offer';
 
 export type FavoritesOffersState = {

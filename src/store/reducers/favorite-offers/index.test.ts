@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { favoriteOffersReducer, FavoritesOffersState, initialState } from './index';
-import { fetchFavoritesOffers, changeFavoriteStatus } from '../../action';
+import { fetchFavoritesOffers, changeFavoriteStatus } from '../../actions';
 import { convertOfferInfoToOffer } from '../../../utils/convert-offer-info-into-offer';
 import { Offer, OfferRequestStatus } from '../../../types/offer';
 import { OfferInfo } from '../../../types/offer-info';

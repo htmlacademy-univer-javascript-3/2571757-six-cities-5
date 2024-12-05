@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchOfferComments, postOfferComment } from '../../action';
+import { fetchOfferComments, postOfferComment } from '../../actions';
 import type { Comment } from '../../../types/comment';
 import { ErrorResponse, RequestStatus } from '../../types';
 
