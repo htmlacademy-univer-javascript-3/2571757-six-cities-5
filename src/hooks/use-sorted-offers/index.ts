@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { Offer } from '../types/offer';
-import { SortVariant } from '../types/sort-variants';
-import { useAppSelector } from '../store/hooks';
-import { selectSortVariant } from '../store/selectors';
+import { Offer } from '../../types/offer';
+import { SortVariant } from '../../types/sort-variants';
+import { useAppSelector } from '../../store/hooks';
+import { selectSortVariant } from '../../store/selectors';
 
 export const useSortedOffers = (offers: Offer[]): Offer[] => {
 	const sortVariant = useAppSelector(selectSortVariant);

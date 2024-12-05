@@ -2,7 +2,7 @@ import { memo, useRef, useState } from 'react';
 import { SortVariant } from '../../types/sort-variants';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { selectSortVariant } from '../../store/selectors';
-import { decodeSortVariant } from './helpers/decodeSortVariant';
+import { decodeSortVariant } from './utils';
 import { SORT_VARIANTS } from './constants';
 import styles from './styles.module.css';
 

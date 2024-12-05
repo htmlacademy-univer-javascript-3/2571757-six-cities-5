@@ -1,5 +1,5 @@
 import { useMatch } from 'react-router-dom';
-import { AppRoutes } from '../../../constants/routes';
+import { AppRoutes } from '../../constants/routes';
 
 type PageSettings = {
 	hasFooter: boolean;
