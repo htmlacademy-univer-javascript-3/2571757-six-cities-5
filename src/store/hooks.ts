@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from './types';
-import * as actions from './action';
+import * as actions from './actions';
 import { commonActions } from './reducers/common';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

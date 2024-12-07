@@ -1,14 +1,14 @@
 export const Actions = {
-	FETCH_OFFER: 'FETCH_OFFER',
-	FETCH_OFFERS: 'FETCH_OFFERS',
-	FETCH_NEAREST_OFFERS: 'FETCH_OFFERS',
-	FETCH_FAVORITES_OFFERS: 'FETCH_FAVORITES_OFFERS',
-	CHANGE_FAVORITE_STATUS: 'CHANGE_FAVORITE_STATUS',
-	CHANGE_CITY: 'CHANGE_CITY',
-	CHANGE_SORT_VARIANT: 'CHANGE_SORT_VARIANT',
-	CHECK_AUTH_STATUS: 'CHECK_AUTH_STATUS',
-	AUTHORIZE: 'AUTHORIZE',
-	LOGOUT: 'LOGOUT',
-	FETCH_OFFER_COMMENTS: 'FETCH_OFFER_COMMENTS',
-	POST_OFFER_COMMENT: 'POST_OFFER_COMMENT'
+	FETCH_OFFER: 'offer-info/fetchOfferInfo',
+	FETCH_OFFERS: 'offers/fetchOffers',
+	FETCH_NEAREST_OFFERS: 'nearest-offers/fetchNearestOffers',
+	FETCH_FAVORITES_OFFERS: 'favorites-offers/fetchFavoritesOffers',
+	CHANGE_FAVORITE_STATUS: 'favorites-offers/changeFavoriteStatus',
+	CHANGE_CITY: 'common/changeCity',
+	CHANGE_SORT_VARIANT: 'common/changeSortVariant',
+	CHECK_AUTH_STATUS: 'auth/checkAuthStatus',
+	AUTHORIZE: 'auth/authorize',
+	LOGOUT: 'auth/logout',
+	FETCH_OFFER_COMMENTS: 'comments/fetchOfferComments',
+	POST_OFFER_COMMENT: 'comments/postOfferComment'
 };

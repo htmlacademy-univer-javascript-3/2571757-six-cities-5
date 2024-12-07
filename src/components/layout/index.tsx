@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Header } from '../header';
 import { Footer } from '../footer';
-import { usePageSettings } from './hooks/use-page-settings';
+import { usePageSettings } from '../../hooks/use-page-settings';
 
 const toastOptions = {
 	duration: 5000,

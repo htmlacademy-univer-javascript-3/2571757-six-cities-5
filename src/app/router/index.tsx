@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from '../../components/private-route';
 import { AppRoutes } from '../../constants/routes.ts';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
@@ -28,25 +28,22 @@ export const Router = () => {
 		}
 	}, [authorizationStatus, fetchFavoritesOffers]);
 
-
 	return (
-		<BrowserRouter>
-			<Suspense fallback={<Spinner />}>
-				<Routes>
-					<Route path={AppRoutes.Default} element={<Layout />}>
-						<Route index element={<MainPage />} />
-						<Route path={AppRoutes.Login} element={<LoginPage />} />
-						<Route path={AppRoutes.Favorites} element={(
-							<PrivateRoute>
-								<FavoritesPage />
-							</PrivateRoute>
-						)}
-						/>
-						<Route path={AppRoutes.OfferForRouter} element={<OfferPage />} />
-					</Route>
-					<Route path='*' element={<Page404 />} />
-				</Routes>
-			</Suspense>
-		</BrowserRouter>
+		<Suspense fallback={<Spinner />}>
+			<Routes>
+				<Route path={AppRoutes.Default} element={<Layout />}>
+					<Route index element={<MainPage />} />
+					<Route path={AppRoutes.Login} element={<LoginPage />} />
+					<Route path={AppRoutes.Favorites} element={(
+						<PrivateRoute>
+							<FavoritesPage />
+						</PrivateRoute>
+					)}
+					/>
+					<Route path={AppRoutes.OfferForRouter} element={<OfferPage />} />
+				</Route>
+				<Route path='*' element={<Page404 />} />
+			</Routes>
+		</Suspense>
 	);
 };

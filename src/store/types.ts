@@ -1,4 +1,4 @@
-import { Dispatch } from '@reduxjs/toolkit';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { store } from './';
 
@@ -11,8 +11,8 @@ export interface ThunkExtraArgs {
 
 export type ThunkConfig<T> = {
     rejectValue: T;
-    extra: ThunkExtraArgs;
-    dispatch?: Dispatch;
+    extra: AxiosInstance;
+    dispatch?: AppDispatch;
     state: RootState;
 }
 
@@ -27,3 +27,5 @@ export type ErrorResponse = {
 	message?: string;
 	details?: { property: string; value: string; messages: string[] }[];
 }
+
+export type AppThunkDispatch = ThunkDispatch<RootState, ReturnType<() => AxiosInstance>, Action>;

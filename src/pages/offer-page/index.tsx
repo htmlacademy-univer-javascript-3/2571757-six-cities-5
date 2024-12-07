@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useActions, useAppSelector } from '../../store/hooks.ts';
 import { selectAuthReducerData, selectOfferInfoReducerData } from '../../store/selectors.ts';
 import { AppRoutes } from '../../constants/routes.ts';
-import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling/index.ts';
 import { NearestOffers, OfferInfo } from '../../components';
 
 const OfferPage = () => {

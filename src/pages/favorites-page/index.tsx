@@ -4,7 +4,7 @@ import { OffersList, Spinner } from '../../components';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
 import { NoFavoritesOffersSlug } from '../../components/no-favorites-offers-slug/index.tsx';
-import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling/index.ts';
 import styles from './styles.module.css';
 
 const FavoritesPage = () => {

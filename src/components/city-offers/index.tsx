@@ -5,7 +5,7 @@ import { Map } from '../map';
 import { useAppSelector } from '../../store/hooks';
 import { selectCityName } from '../../store/selectors';
 import { SortForm } from '../sort-form';
-import { NoOffersSlug } from './components/no-offers-slug';
+import { NoOffersSlug } from '../no-offers-slug';
 
 type Props = {
 	offers: Offer[];

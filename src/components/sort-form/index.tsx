@@ -2,7 +2,7 @@ import { memo, useRef, useState } from 'react';
 import { SortVariant } from '../../types/sort-variants';
 import { useActions, useAppSelector } from '../../store/hooks';
 import { selectSortVariant } from '../../store/selectors';
-import { decodeSortVariant } from './helpers/decodeSortVariant';
+import { decodeSortVariant } from './utils';
 import { SORT_VARIANTS } from './constants';
 import styles from './styles.module.css';
 
@@ -41,7 +41,7 @@ export const SortForm = memo(() => {
 			<span className="places__sorting-caption">Sort by</span>
 			<span className={`places__sorting-type ${styles.variant}`} tabIndex={0} onClick={handleFormVisibilityToggle}>
 				{decodeSortVariant(sortVariant)}
-				<svg className={`places__sorting-arrow ${isOpen ? undefined : styles.rotated}`} width="7" height="4">
+				<svg role='presentation' className={`places__sorting-arrow ${isOpen ? undefined : `${styles.rotated} rotated`}`} width="7" height="4">
 					<use xlinkHref="#icon-arrow-select"></use>
 				</svg>
 			</span>
