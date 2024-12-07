@@ -108,6 +108,7 @@ export const CommentForm = ({ offerId }: Props) => {
 					className="reviews__submit form__submit button"
 					type="submit"
 					disabled={isSubmitDisabled}
+					role='button'
 				>
 					Submit
 				</button>

@@ -41,7 +41,7 @@ export const SortForm = memo(() => {
 			<span className="places__sorting-caption">Sort by</span>
 			<span className={`places__sorting-type ${styles.variant}`} tabIndex={0} onClick={handleFormVisibilityToggle}>
 				{decodeSortVariant(sortVariant)}
-				<svg className={`places__sorting-arrow ${isOpen ? undefined : styles.rotated}`} width="7" height="4">
+				<svg role='presentation' className={`places__sorting-arrow ${isOpen ? undefined : `${styles.rotated} rotated`}`} width="7" height="4">
 					<use xlinkHref="#icon-arrow-select"></use>
 				</svg>
 			</span>
