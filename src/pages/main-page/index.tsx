@@ -7,8 +7,8 @@ import {
 	selectCityName,
 	selectOffersReducerData
 } from '../../store/selectors.ts';
-import { useSortedOffers } from '../../hooks/use-sorted-offers.ts';
-import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import { useSortedOffers } from '../../hooks/use-sorted-offers';
+import { useErrorHandling } from '../../hooks/use-error-handling/index.ts';
 
 const MainPage = () => {
 	const { fetchOffers } = useActions();

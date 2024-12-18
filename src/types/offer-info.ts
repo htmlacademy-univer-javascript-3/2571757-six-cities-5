@@ -18,7 +18,7 @@ export type OfferInfo = {
 	rating: number;
 	description: string;
 	bedrooms: number;
-	goods: [string];
+	goods: string[];
 	host: OfferHost;
 	images: string[];
 	maxAdults: number;

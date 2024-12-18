@@ -4,7 +4,7 @@ import { OfferCard } from '../offer-card';
 import { calculateClassName } from './utils/index.ts';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectFavoriteOffersReducerData } from '../../store/selectors.ts';
-import { useErrorHandling } from '../../hooks/use-error-handling.ts';
+import { useErrorHandling } from '../../hooks/use-error-handling/index.ts';
 
 type Props = {
 	offers: Offer[];
