@@ -47,9 +47,9 @@ const FavoritesPage = () => {
 							<li className="favorites__locations-items" key={cityName}>
 								<div className="favorites__locations locations locations--current">
 									<div className="locations__item">
-										<a className="locations__item-link" href="#">
+										<div className="locations__item-link">
 											<span>{cityName}</span>
-										</a>
+										</div>
 									</div>
 								</div>
 								{cityOffers.length && <OffersList offers={cityOffers} type='favorites' />}
