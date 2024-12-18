@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../constants/routes';
 import styles from './styles.module.css';
 
 const Page404 = () => {
 	const navigate = useNavigate();
 
 	const handleButtonClick = () => {
-		navigate('/', { replace: true });
+		navigate(AppRoutes.Default, { replace: true });
 	};
 
 	return (
